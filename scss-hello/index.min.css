@@ -1,0 +1,1 @@
+.box{padding:20px;border:2px solid #f78496}.box .nav{display:flex}.box .nav ul li{flex:1;margin:6px}.box .nav ul li a{color:red}.box .nav ul li a:hover{color:#ffc400}.mixin{border:10px dashed red;padding:10px;color:#8300fd;color:green}

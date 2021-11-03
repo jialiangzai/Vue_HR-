@@ -1,0 +1,30 @@
+// 定义变量的语法 $变量名:变量值
+@import "./base.scss";
+$orange: rgb(255, 196, 0);
+$border: 2px solid #f78496;
+$padding: 20px;
+.box {
+  padding: $padding;
+  border: $border;
+  .nav {
+    display: flex;
+    ul {
+      li {
+        flex: 1;
+        margin: 6px;
+        a {
+          color: $common;
+          &:hover {
+            color: $orange;
+          }
+        }
+      }
+    }
+  }
+}
+.mixin {
+  // @include使用 会覆盖之前的样式
+  @include boxs;
+  // 可以覆盖mixin的样式
+  color: green;
+}

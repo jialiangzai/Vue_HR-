@@ -1,0 +1,7 @@
+$common: red;
+// 定义混入样式
+@mixin boxs {
+  border: 10px dashed $common;
+  padding: 10px;
+  color: #8300fd;
+}
