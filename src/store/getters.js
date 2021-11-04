@@ -1,3 +1,5 @@
+
+// getter做了映射 简写
 const getters = {
   sidebar: state => state.app.sidebar,
   device: state => state.app.device,

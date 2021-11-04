@@ -1,8 +1,43 @@
+import router from './router' // 路由实例
+import store from './store' // vue实例
+// 白名单 (不需要token)
+const whiteList = ['/login', '404']
+import NProgress from 'nprogress' // progress bar
+import 'nprogress/nprogress.css' // progress bar style
+
+/**
+ * to 去哪里
+ * from 来自
+ * next 放行回调函数 访问页面
+ */
+router.beforeEach((to, from, next) => {
+  // 开启进度条
+  NProgress.start()
+
+  if (store.getters.token) {
+    // 有token
+    if (to.path === '/login') {
+      // 如果是登录页跳转到首页
+      next('/')
+    } else {
+      // 不是登录页
+      next()
+    }
+  } else {
+    // 没token 第一种方式 indexof ====》-1  第二种方式数组的includes方法 返回布尔值
+    if (whiteList.includes(to.path)) {
+      // 放行
+      next()
+    } else {
+      next('/login')
+    }
+  }
+  // 关闭进度条
+  NProgress.done()
+})
 // import router from './router'
 // import store from './store'
 // import { Message } from 'element-ui'
-// import NProgress from 'nprogress' // progress bar
-// import 'nprogress/nprogress.css' // progress bar style
 // import { getToken } from '@/utils/auth' // get token from cookie
 // import getPageTitle from '@/utils/get-page-title'
 

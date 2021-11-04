@@ -94,10 +94,44 @@
 //   mutations,
 //   actions
 // }
+// 导入持久化方法
+import * as auth from '@/utils/auth'
+import { login } from '@/api/user'
 
 export default {
   namespaced: true,
-  state: {},
-  mutations: {},
-  actions: {}
+  // 定义变量
+  state: {
+    // 登录成功的token
+    token: auth.getToken() || null
+  },
+  mutations: {
+    /**
+     *
+     * @param {*} state state变量对象
+     * @param {*} payload 外部调用传入的参数
+     */
+    // 定义修改变量的方法
+    setToken (state, payload) {
+      state.token = payload
+      auth.setToken(payload)
+    },
+    delToken (state) {
+      state.token = null
+      auth.removeToken()
+    }
+  },
+  actions: {
+    /**
+     *
+     * @param {*} {commit}    -------- context 调用commit等方法的上下文
+     * @param {*} formData --------外部调用传来的参数 手机号 密码
+     */
+    // 登录请求方法
+    async getTokenAction ({ commit }, formData) {
+      const token = await login(formData)
+      // 调用mutations方法存储token（内存）
+      commit('setToken', token)
+    }
+  }
 }
