@@ -28,3 +28,14 @@ export function logout () {
     method: 'post'
   })
 }
+/**
+ * @description: 获取用户资料
+ * @param {*}
+ * @return {*}
+ */
+export function getUserInfo () {
+  return request({
+    url: '/sys/profile',
+    method: 'post'
+  })
+}

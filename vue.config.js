@@ -52,11 +52,11 @@ module.exports = {
       // 表示如果我们的请求地址有/api的时候,就出触发代理机制
       '/api': {
         target: 'http://8.142.65.7:3000', // 跨域请求的地址=>告诉代理服务器去哪里请求数据
-        changeOrigin: true, // 是否跨域 需要设置此值为true 才可以让本地服务代理我们发出请求 默认是true可以省略
+        changeOrigin: true // 是否跨域 需要设置此值为true 才可以让本地服务代理我们发出请求 默认是true可以省略
         // 重写路径----------在后台没有统一前缀情况下使用，用于去除前端临时添加的/api前缀
-        pathRewrite: {
-          '^/api': ''
-        }
+        // pathRewrite: {
+        //   '^/api': ''
+        // }
       }
     }
     // before: require('./mock/mock-server.js')

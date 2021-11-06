@@ -1,5 +1,6 @@
 <template>
   <div class="login-container">
+    <!-- 表单 -->
     <el-form
       ref="loginForm"
       :model="loginForm"
@@ -73,6 +74,7 @@
 <script>
 import { validMobile } from '@/utils/validate'
 import { mapActions } from 'vuex'
+// import { login } from '@/api/user'
 export default {
   name: 'Login',
   data () {
@@ -102,17 +104,17 @@ export default {
       },
       loading: false,
       passwordType: 'password',
-      // 存储回调地址
+      // 存储回跳地址
       redirect: undefined
     }
   },
   watch: {
-    // 键控路由参数的变化
+    // 监控路由参数的变化
     $route: {
       handler: function (route) {
         // 存储上次访问页面地址
+        console.log('路由参数监控：', route)
         this.redirect = route.query && route.query.redirect
-        console.log(`路由参数键控${route}`)
       },
       immediate: true
     }
@@ -129,7 +131,6 @@ export default {
         this.$refs.password.focus()
       })
     },
-
     handleLogin () {
       // 表单整体校验
       this.$refs.loginForm.validate(async valid => {
@@ -138,9 +139,11 @@ export default {
           this.loading = true
           console.log('进行登录')
           try {
-            // 等待存储完token在做后续的操作
             await this.getTokenAction(this.loginForm)
-            // 进行回跳
+            // const res = await login(this.loginForm)
+            // console.log('调用结果：', res)
+            // this.$store.commit('user/setToken', res)
+            // 存储完token，跳转页面
             this.$router.replace(this.redirect || '/')
           } catch (error) {
             console.log(error)
@@ -163,9 +166,9 @@ export default {
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
 $bg: #283443;
-$light_gray: #fff;
-$cursor: #fff;
 $light_gray: #68b0fe; // 将输入框颜色改成蓝色
+$cursor: #fff;
+
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
   .login-container .el-input input {
     color: $cursor;
@@ -173,6 +176,7 @@ $light_gray: #68b0fe; // 将输入框颜色改成蓝色
 }
 
 /* reset element-ui css */
+// style中使用@前边加上~才能被识别
 .login-container {
   background-image: url("~@/assets/common/login.jpg"); // 设置背景图片
   background-position: center; // 将图片位置设置为充满整个屏幕
@@ -200,7 +204,6 @@ $light_gray: #68b0fe; // 将输入框颜色改成蓝色
 
   .el-form-item {
     border: 1px solid rgba(255, 255, 255, 0.1);
-    // background: rgba(0, 0, 0, 0.1);
     background: rgba(255, 255, 255, 0.7); // 输入登录表单的背景色
     border-radius: 5px;
     color: #454545;
@@ -213,6 +216,7 @@ $light_gray: #68b0fe; // 将输入框颜色改成蓝色
 $bg: #2d3a4b;
 $dark_gray: #889aa4;
 $light_gray: #eee;
+
 .login-container {
   min-height: 100%;
   width: 100%;

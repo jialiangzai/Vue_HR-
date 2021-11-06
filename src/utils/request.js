@@ -68,9 +68,10 @@ service.interceptors.response.use(
         duration: 3 * 1000
       })
       // 对外抛出错误
-      return Promise.reject(new Error(message))
     }
+    return Promise.reject(new Error(message))
   },
+
   error => {
     // 正常：200以外走到这里
     console.log('err' + error) // for debug
@@ -82,5 +83,4 @@ service.interceptors.response.use(
     return Promise.reject(error)
   }
 )
-
 export default service

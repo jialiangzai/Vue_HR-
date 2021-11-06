@@ -12,7 +12,9 @@
 </template>
 
 <script>
+// 导入=》头部 菜单 内容 渲染二级组件
 import { Navbar, Sidebar, AppMain } from './components'
+// 移动端自适应混入技术
 import ResizeMixin from './mixin/ResizeHandler'
 
 export default {

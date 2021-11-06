@@ -2,7 +2,7 @@ import store from '@/store'
 
 const { body } = document
 const WIDTH = 992 // refer to Bootstrap's responsive design
-
+// 混入对象=》可以把对象中定义的所有组件的api加入到另一个组件中，mixin引入之后会默认执行 mixin合并混入对象 提高复用性和可维护性易于管理
 export default {
   watch: {
     $route(route) {
@@ -12,6 +12,7 @@ export default {
     }
   },
   beforeMount() {
+    // 监听窗口大小变化
     window.addEventListener('resize', this.$_resizeHandler)
   },
   beforeDestroy() {

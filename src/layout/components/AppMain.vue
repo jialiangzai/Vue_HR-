@@ -1,6 +1,9 @@
 <template>
   <section class="app-main">
+    <!-- transition 是vue动画内置组件 -->
     <transition name="fade-transform" mode="out-in">
+      <!-- 二级路由挂载点 -->
+      <!-- key的目的：避免缓存 -->
       <router-view :key="key" />
     </transition>
   </section>
@@ -10,7 +13,7 @@
 export default {
   name: 'AppMain',
   computed: {
-    key() {
+    key () {
       return this.$route.path
     }
   }
@@ -25,7 +28,7 @@ export default {
   position: relative;
   overflow: hidden;
 }
-.fixed-header+.app-main {
+.fixed-header + .app-main {
   padding-top: 50px;
 }
 </style>

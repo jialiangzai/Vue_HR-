@@ -96,14 +96,16 @@
 // }
 // 导入持久化方法
 import * as auth from '@/utils/auth'
-import { login } from '@/api/user'
+import { login, getUserInfo } from '@/api/user'
 
 export default {
   namespaced: true,
   // 定义变量
   state: {
     // 登录成功的token
-    token: auth.getToken() || null
+    token: auth.getToken() || null,
+    // 登录人信息(昵称、头像、权限等)
+    userInfo: {}
   },
   mutations: {
     /**
@@ -112,13 +114,26 @@ export default {
      * @param {*} payload 外部调用传入的参数
      */
     // 定义修改变量的方法
-    setToken (state, payload) {
-      state.token = payload
-      auth.setToken(payload)
+    setToken (state, token) {
+      state.token = token
+      auth.setToken(token)
     },
     delToken (state) {
       state.token = null
       auth.removeToken()
+    },
+    setUserInfo (state, userInfo) {
+      state.userInfo = userInfo
+    },
+    // 登出
+    // logout (context) {
+    //   // 清除token
+    //   context.commit('removeToken')
+    //   // 清除用户信息
+    //   context.commit('reomveUserInfo')
+    // }
+    delUserInfo (state) {
+      state.userInfo = {}
     }
   },
   actions: {
@@ -130,8 +145,18 @@ export default {
     // 登录请求方法
     async getTokenAction ({ commit }, formData) {
       const token = await login(formData)
+      console.log('token:', token)
       // 调用mutations方法存储token（内存）
       commit('setToken', token)
+    },
+    async getUserInfoAction ({ commit }) {
+      /**
+       * 发请求
+       * 通过commit调用上面的mutations存储
+       */
+      const userInfo = await getUserInfo()
+      console.log(userInfo)
+      commit('setUserInfo', userInfo)
     }
   }
 }
