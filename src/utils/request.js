@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
 import store from '@/store'
+import router from '@/router'
 // create an axios instance
 const service = axios.create({
   // 后台请求基础地址(动态)
@@ -68,18 +69,33 @@ service.interceptors.response.use(
         duration: 3 * 1000
       })
       // 对外抛出错误
+      // debugger
+      return Promise.reject(new Error(message))
     }
-    return Promise.reject(new Error(message))
   },
 
   error => {
     // 正常：200以外走到这里
     console.log('err' + error) // for debug
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000
-    })
+    /**
+     * 需求：出现401 重新登录
+     * 判断401情况
+     * 错误提示
+     * 跳转到登录页 带上401页面的地址 》继续浏览之前的页面
+     */
+    console.dir(error)
+    if (error.response && error.response.status === 401) {
+      store.dispatch('user/logout')
+      // 处理某些页面多个请求多次401重复跳转问题，造成重新登录后不能正确跳转到上次访问页面问题
+      // 注意：多次401=》避免错误回调代码多次执行=》判断如果401而且是登录页 就 return
+      if (router.currentRoute.path === '/login') return
+      Message({
+        message: error.response.data.message,
+        type: 'error',
+        duration: 5 * 1000
+      })
+      router.replace(`/login?redirect=${router.currentRoute.path}`)
+    }
     return Promise.reject(error)
   }
 )

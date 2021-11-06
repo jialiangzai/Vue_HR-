@@ -96,7 +96,7 @@
 // }
 // 导入持久化方法
 import * as auth from '@/utils/auth'
-import { login, getUserInfo } from '@/api/user'
+import { login, getUserInfo, getUserDetailById } from '@/api/user'
 
 export default {
   namespaced: true,
@@ -137,26 +137,44 @@ export default {
     }
   },
   actions: {
+    // 退出登录
+    /**
+     * 后台退出---调接口
+     * 前端退出----清除本地数据
+     * @param {*} param0
+     * @param {*} formData
+     */
+    logout ({ commit }) {
+      commit('delToken')
+      commit('delUserInfo')
+    },
+
     /**
      *
      * @param {*} {commit}    -------- context 调用commit等方法的上下文
      * @param {*} formData --------外部调用传来的参数 手机号 密码
      */
     // 登录请求方法
-    async getTokenAction ({ commit }, formData) {
-      const token = await login(formData)
+    async getTokenAction ({ commit }, formDatas) {
+      const token = await login(formDatas)
       console.log('token:', token)
+      console.log('formData:', formDatas)
       // 调用mutations方法存储token（内存）
       commit('setToken', token)
     },
+
     async getUserInfoAction ({ commit }) {
       /**
        * 发请求
        * 通过commit调用上面的mutations存储
        */
       const userInfo = await getUserInfo()
-      console.log(userInfo)
-      commit('setUserInfo', userInfo)
+      // 头像-----依赖上一步的用户ID
+      const photoInfo = await getUserDetailById(userInfo.userId)
+      console.log(userInfo, photoInfo)
+      // 浅拷贝
+      commit('setUserInfo', { ...userInfo, ...photoInfo })
+      return userInfo
     }
   }
 }

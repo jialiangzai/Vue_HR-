@@ -74,7 +74,6 @@
 <script>
 import { validMobile } from '@/utils/validate'
 import { mapActions } from 'vuex'
-// import { login } from '@/api/user'
 export default {
   name: 'Login',
   data () {
@@ -140,9 +139,7 @@ export default {
           console.log('进行登录')
           try {
             await this.getTokenAction(this.loginForm)
-            // const res = await login(this.loginForm)
-            // console.log('调用结果：', res)
-            // this.$store.commit('user/setToken', res)
+            console.log(this.loginForm)
             // 存储完token，跳转页面
             this.$router.replace(this.redirect || '/')
           } catch (error) {

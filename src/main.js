@@ -14,6 +14,12 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+import * as directs from '@/directives'
+// 批量注册全局指令
+// Object.keys()===>>>遍历的是对象的所有键存数组
+Object.keys(directs).forEach(name => {
+  Vue.directive(name, directs[name])
+})
 
 /**
  * If you don't want to use mock-server

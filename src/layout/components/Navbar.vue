@@ -17,7 +17,7 @@
       <!-- 登录人信息 -->
       <el-dropdown class="avatar-container" trigger="hover">
         <div class="avatar-wrapper">
-          <img src="@/assets/common/bigUserHeader.png" class="user-avatar" />
+          <img v-imgeerror="defaultImg" :src="avatar" class="user-avatar" />
           <span class="name">{{ name }}</span>
           <i class="el-icon-caret-bottom" style="color: #fff" />
         </div>
@@ -48,11 +48,16 @@
 import { mapGetters } from 'vuex'
 // import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-
+import defaultImg from '@/assets/common/bigUserHeader.png'
 export default {
   components: {
     // Breadcrumb,
     Hamburger
+  },
+  data () {
+    return {
+      defaultImg
+    }
   },
   computed: {
     ...mapGetters([
@@ -70,7 +75,15 @@ export default {
     //   this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     // }
     async logout () {
-      console.log('退出。。。')
+      // console.log('退出。。。')
+      try {
+        this.$confirm('确定退出人资中台吗，亲?', '提示')
+        console.log('点击确定')
+        this.$store.dispatch('user/logout')
+        this.$router.replace('/login')
+      } catch (error) {
+        console.log('取消')
+      }
     }
   }
 }

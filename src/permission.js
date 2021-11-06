@@ -26,7 +26,7 @@ router.beforeEach(async (to, from, next) => {
       // 在放行之后获取用户登录信息 此时有token js中用实例不能用vuex 发送请求，路由守卫做数据不用存储本地 而且用户信息是可变的 加前缀
       // 判断如果没有获取用户信息才进行调用
       if (!store.getters.name) {
-        await store.dispatch('user/getTokenAction')
+        await store.dispatch('user/getUserInfoAction')
       }
     }
   } else {
