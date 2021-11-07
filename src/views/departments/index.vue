@@ -8,7 +8,7 @@
           <!-- 用一个行列布局 -->
           <el-row>
             <el-col :span="20">
-              <span>江苏传智播客教育科技股份有限公司</span>
+              <span>{{ company.name }}</span>
             </el-col>
             <el-col :span="4">
               <el-row type="flex" justify="end">
@@ -34,6 +34,7 @@
           default-expand-all
           @node-click="handleNodeClick"
         >
+        <!-- 单项数据 作用域插槽定义好了的-->
           <template #default="{ data }">
             <!-- 单个树的项结构 -->
             <el-row style="width: 100%">
@@ -69,6 +70,7 @@
 </template>
 
 <script>
+import { getDepartments } from '@/api/department'
 export default {
   data () {
     return {
@@ -88,12 +90,27 @@ export default {
       defaultProps: {
         children: 'children',
         label: 'name' // 后台返回叫name
-      }
+      },
+      // 公司信息
+      company: { name: '', manager: '' }
     }
   },
+  created () {
+    this.getDepartData()
+  },
   methods: {
+    async getDepartData () {
+      const { companyName, depts } = await getDepartments()
+      console.table(depts)
+      this.company.name = companyName
+      this.departData = depts
+      /**
+       * 根据渲染结构，我们发现，虽然数据已经成功显示出来了，但是它是平铺下来的，并不是树形的，这是因为后端返回来的数据并不是一个嵌套的数组结构，而是一个平铺的数组结构，需要我们自行处理一下
+       */
+    },
     // 点击文字触发事件
     handleNodeClick (data) {
+      // 获取部门数据
       console.log(data)
     }
   }
