@@ -77,7 +77,7 @@ export default {
     async logout () {
       // console.log('退出。。。')
       try {
-        this.$confirm('确定退出人资中台吗，亲?', '提示')
+        await this.$confirm('确定退出人资中台吗，亲?', '提示')
         console.log('点击确定')
         this.$store.dispatch('user/logout')
         this.$router.replace('/login')
