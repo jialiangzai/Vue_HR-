@@ -1,7 +1,6 @@
 /**
  * Created by PanJiaChen on 16/11/18.
  */
-
 /**
  * Parse the time to string
  * @param {(Object|string|number)} time
@@ -137,5 +136,29 @@ export function transformTreeData (list) {
   list.forEach(item => {
     map[item.id] = item
   })
+  console.log('映射关系：', map)
+  list.forEach(item => {
+    // 找父部门
+    // 排除pid=-1公司
+    if (item.pid === '-1') return
+    /**
+      * 核心：根据pid的值从map映射关系中找父部门
+      * 1. '' => 顶级部门
+      * 2. '父部门的id' =》
+      */
+    // 如果存在则表示item不是最顶层的数据=>pid为父节点ID
+    const parent = map[item.pid]
+    if (parent) {
+      // 找到了
+      if (!parent.children) {
+        parent.children = []
+      }
+      parent.children.push(item)
+    } else {
+      // 没找到=》顶级（一级）部门
+      treeData.push(item)
+    }
+  })
+
   return treeData
 }

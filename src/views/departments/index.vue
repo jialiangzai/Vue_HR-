@@ -105,8 +105,8 @@ export default {
       console.table(depts)
       this.company.name = companyName
       // 拿到数据后转换
-      console.log('转换结果,', transformTreeData(depts))
-      this.departData = depts
+      // console.log('转换结果,', transformTreeData(depts))
+      this.departData = transformTreeData(depts)
       /**
        * 根据渲染结构，我们发现，虽然数据已经成功显示出来了，但是它是平铺下来的，并不是树形的，这是因为后端返回来的数据并不是一个嵌套的数组结构，而是一个平铺的数组结构，需要我们自行处理一下
        */
