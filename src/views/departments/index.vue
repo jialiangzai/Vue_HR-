@@ -55,7 +55,9 @@
                       <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item>添加子部门</el-dropdown-item>
                         <el-dropdown-item>编辑部门</el-dropdown-item>
-                        <el-dropdown-item>删除部门</el-dropdown-item>
+                        <el-dropdown-item @click.native="delDept(data)">
+                          删除部门
+                        </el-dropdown-item>
                       </el-dropdown-menu>
                     </el-dropdown>
                   </el-col>
@@ -70,7 +72,7 @@
 </template>
 
 <script>
-import { getDepartments } from '@/api/department'
+import { getDepartments, delDepartments } from '@/api/department'
 import { transformTreeData } from '@/utils/index'
 export default {
   data () {
@@ -100,6 +102,26 @@ export default {
     this.getDepartData()
   },
   methods: {
+    // 删除部门数据
+    async delDept (data) {
+      console.log(data)
+      /**
+       * 1.用户确认
+       * 2.确定了，如果是父部门下面有子部门不能删除data.children && data.children.length > 0
+       * 3.如果是没有子级部门可以删除
+       * 4.重新获取树形数据
+       */
+      try {
+        await this.$confirm(`确认要删除${data.name}?`, '提示')
+        if (data.children && data.children.length > 0) {
+          return this.$message.error('包含子级部门的父部门不能直接删除，先删除子')
+        }
+        await delDepartments(data.id)
+        this.$message.success('删除成功！')
+      } catch (error) {
+        console.log(error)
+      }
+    },
     async getDepartData () {
       const { companyName, depts } = await getDepartments()
       console.table(depts)
@@ -109,8 +131,8 @@ export default {
       // console.log('转换结果,', transformTreeData(depts))
       this.departData = transformTreeData(depts)
       /**
-       * 根据渲染结构，我们发现，虽然数据已经成功显示出来了，但是它是平铺下来的，并不是树形的，这是因为后端返回来的数据并不是一个嵌套的数组结构，而是一个平铺的数组结构，需要我们自行处理一下
-       */
+   * 根据渲染结构，我们发现，虽然数据已经成功显示出来了，但是它是平铺下来的，并不是树形的，这是因为后端返回来的数据并不是一个嵌套的数组结构，而是一个平铺的数组结构，需要我们自行处理一下
+   */
     },
     // 点击文字触发事件
     handleNodeClick (data) {
