@@ -1,5 +1,11 @@
 <template>
-  <div>员工管理</div>
+  <div class="employees-container">
+    <div class="app-container">
+      <el-card>
+        <!-- 具体页面结构 -->
+      </el-card>
+    </div>
+  </div>
 </template>
 
 <script>
