@@ -2,7 +2,7 @@
   <div :class="{ 'has-logo': showLogo }">
     <!-- logo -->
     <logo v-if="showLogo" :collapse="isCollapse" />
-    <!-- menu -->
+    <!-- menu 菜单 -->
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
         :default-active="activeMenu"
@@ -14,7 +14,8 @@
         :collapse-transition="false"
         mode="vertical"
       >
-        <!-- 菜单的子项 -->
+        <!-- 菜单子项 -->
+          <!-- :key="route.path" -->
         <sidebar-item
           v-for="route in routes"
           :key="route.path"
@@ -38,8 +39,9 @@ export default {
     ...mapGetters([
       'sidebar'
     ]),
-    // 动态计算路由配置规则==>生成菜单数据
+    // 动态计算路由配置规则=》生成菜单数据
     routes () {
+      console.log('所有路由规则：', this.$router.options.routes)
       return this.$router.options.routes
     },
     activeMenu () {
