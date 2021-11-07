@@ -105,6 +105,7 @@ export default {
       console.table(depts)
       this.company.name = companyName
       // 拿到数据后转换
+      // 注意只能调用一次log之后报错,depts改变了,组件库循环有重复的key,避免重复引用
       // console.log('转换结果,', transformTreeData(depts))
       this.departData = transformTreeData(depts)
       /**
