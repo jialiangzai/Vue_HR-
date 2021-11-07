@@ -8,7 +8,7 @@
  * @param {string} cFormat
  * @returns {string | null}
  */
-export function parseTime(time, cFormat) {
+export function parseTime (time, cFormat) {
   if (arguments.length === 0 || !time) {
     return null
   }
@@ -45,7 +45,7 @@ export function parseTime(time, cFormat) {
   const time_str = format.replace(/{([ymdhisa])+}/g, (result, key) => {
     const value = formatObj[key]
     // Note: getDay() returns 0 on Sunday
-    if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value ] }
+    if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value] }
     return value.toString().padStart(2, '0')
   })
   return time_str
@@ -56,7 +56,7 @@ export function parseTime(time, cFormat) {
  * @param {string} option
  * @returns {string}
  */
-export function formatTime(time, option) {
+export function formatTime (time, option) {
   if (('' + time).length === 10) {
     time = parseInt(time) * 1000
   } else {
@@ -98,7 +98,7 @@ export function formatTime(time, option) {
  * @param {string} url
  * @returns {Object}
  */
-export function param2Obj(url) {
+export function param2Obj (url) {
   const search = decodeURIComponent(url.split('?')[1]).replace(/\+/g, ' ')
   if (!search) {
     return {}
@@ -114,4 +114,27 @@ export function param2Obj(url) {
     }
   })
   return obj
+}
+/**
+ *
+ * @param {*} list list数组------》嵌套关系的数据
+ * { name: '', children: '' }------》树形结构
+ * 规律：
+ * 1. 公司的pid是-1
+ * 2. 公司下的顶级部门pid的值是''空字符串
+ * 3. 公司下的子部门的pid的值是父部门的id值
+ * 核心：找父部门
+ * 1. 新建转换的属性数据：[]
+ * 2. 构建映射关系 ：map
+ * 3. 根据map的映射关系遍历list对比
+ * 4. 返回转换完的树形结构
+ */
+export function transformTreeData (list) {
+  console.log('要转换的数据：', list)
+  const treeData = []
+  const map = {}
+  list.forEach(item => {
+    map[item.id] = item
+  })
+  return treeData
 }
