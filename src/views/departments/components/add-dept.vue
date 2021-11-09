@@ -4,16 +4,16 @@
     <el-form ref="addForm" :model="form" :rules="rules" label-width="120px">
       <el-form-item label="部门名称" prop="name">
         <el-input
+          v-model="form.name"
           style="width: 80%"
           placeholder="1-50个字符"
-          v-model="form.name"
         />
       </el-form-item>
       <el-form-item label="部门编码" prop="code">
         <el-input
+          v-model="form.code"
           style="width: 80%"
           placeholder="1-50个字符"
-          v-model="form.code"
         />
       </el-form-item>
       <el-form-item label="部门负责人" prop="manager">
@@ -65,47 +65,6 @@ export default {
     currDept: {
       type: Object,
       default: () => ({})
-    },
-  },
-  created () {
-    this.getPeoples()
-  },
-  methods: {
-    // 弹层关闭执行
-    close () {
-      console.log('弹层关闭执行')
-      this.$emit('close-dialog', false)
-    },
-    // 新增部门
-    addDept () {
-      // 整体校验
-      try {
-        await this.$refs.addForm.validate()
-        console.log('校验通过')
-        // console.log('校验通过')
-        /**
-         * 1. 调用接口新增
-         * 2. 组织架构列表刷新
-         * 3. 关闭弹层
-         */
-        // 新增
-        // 需要pid=》1. pid的值是父部门id（新增子部门） 2. pid是空（新增顶级部门）
-        await addDepartments({
-          ...this.form, pid: this.currDept.id || ''
-        })
-        // 通知父组件更新列表
-        this.$emit('update-list')
-        this.$message.success('新增成功')
-        // 关闭弹出层
-        this.$emit('close-dialog', false)
-      } catch (error) {
-        console.log(error)
-      }
-    },
-    async getPeoples () {
-      const peoples = await getEmployeeSimple()
-      console.log('负责人列表：', peoples)
-      this.peoples = peoples
     }
   },
   data () {
@@ -139,6 +98,47 @@ export default {
       peoples: []
     }
   },
+  created () {
+    this.getPeoples()
+  },
+  methods: {
+    // 弹层关闭执行
+    close () {
+      console.log('弹层关闭执行')
+      this.$emit('close-dialog', false)
+    },
+    // 新增部门
+    async addDept () {
+      // 整体校验
+      try {
+        await this.$refs.addForm.validate()
+        console.log('校验通过')
+        // console.log('校验通过')
+        /**
+         * 1. 调用接口新增
+         * 2. 组织架构列表刷新
+         * 3. 关闭弹层
+         */
+        // 新增
+        // 需要pid=》1. pid的值是父部门id（新增子部门） 2. pid是空（新增顶级部门）
+        await addDepartments({
+          ...this.form, pid: this.currDept.id || ''
+        })
+        // 通知父组件更新列表
+        this.$emit('update-list')
+        this.$message.success('新增成功')
+        // 关闭弹出层
+        this.$emit('close-dialog', false)
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async getPeoples () {
+      const peoples = await getEmployeeSimple()
+      console.log('负责人列表：', peoples)
+      this.peoples = peoples
+    }
+  }
 }
 </script>
 

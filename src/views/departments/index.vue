@@ -20,8 +20,8 @@
                     <span> 操作<i class="el-icon-arrow-down" /> </span>
                     <el-dropdown-menu slot="dropdown">
                       <el-dropdown-item @click.native="addDept()">
-                        添加子部门</el-dropdown-item
-                      >
+                        添加子部门
+                      </el-dropdown-item>
                     </el-dropdown-menu>
                   </el-dropdown>
                 </el-col>
@@ -73,15 +73,15 @@
     <!-- 新增部门 -->
     <AddDept
       :show="show"
+      :curr-dept="currDept"
       @update-list="getDepartData"
       @close-dialog="show = $event"
-      :curr-dept="currDept"
     />
   </div>
 </template>
 
 <script>
-import { getDepartments, delDepartments } from '@/api/department'
+import { getDepartments, delDepartments } from '@/api/depar'
 import { transformTreeData } from '@/utils/index'
 import AddDept from './components/add-dept.vue'
 export default {
@@ -164,7 +164,7 @@ export default {
       // 存储当前操作的部门
       this.currDept = currDept
       this.show = true
-    },
+    }
   }
 }
 /** 默认插槽 ==》1 个 默认名字 #default ==>传入结构
