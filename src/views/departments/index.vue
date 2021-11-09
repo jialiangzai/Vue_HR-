@@ -19,7 +19,9 @@
                   <el-dropdown>
                     <span> 操作<i class="el-icon-arrow-down" /> </span>
                     <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item>添加子部门</el-dropdown-item>
+                      <el-dropdown-item @click.native="addDept()">
+                        添加子部门</el-dropdown-item
+                      >
                     </el-dropdown-menu>
                   </el-dropdown>
                 </el-col>
@@ -68,13 +70,24 @@
         </el-tree>
       </el-card>
     </div>
+    <!-- 新增部门 -->
+    <AddDept
+      :show="show"
+      @update-list="getDepartData"
+      @close-dialog="show = $event"
+      :curr-dept="currDept"
+    />
   </div>
 </template>
 
 <script>
 import { getDepartments, delDepartments } from '@/api/department'
 import { transformTreeData } from '@/utils/index'
+import AddDept from './components/add-dept.vue'
 export default {
+  components: {
+    AddDept
+  },
   data () {
     return {
       // 组织架构树形数据
@@ -95,7 +108,11 @@ export default {
         label: 'name' // 后台返回叫name
       },
       // 公司信息
-      company: { name: '', manager: '' }
+      company: { name: '', manager: '' },
+      show: false,
+      // 当前操作部门数据
+      currDept: null
+
     }
   },
   created () {
@@ -138,7 +155,16 @@ export default {
     handleNodeClick (data) {
       // 获取部门数据
       console.log(data)
-    }
+    },
+    // 新增部门
+    /**
+     * currDept 当前要添加子部门的父部门
+     */
+    addDept (currDept) {
+      // 存储当前操作的部门
+      this.currDept = currDept
+      this.show = true
+    },
   }
 }
 /** 默认插槽 ==》1 个 默认名字 #default ==>传入结构

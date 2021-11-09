@@ -19,3 +19,22 @@ export function delDepartments (id) {
     method: 'delete'
   })
 }
+/**
+ * @description: 新增子部门
+ * @param {*}
+        data {
+            name: '', // 部门名称
+            code: '', // 部门编码
+            manager: '', // 部门管理者
+            introduce: '', // 部门介绍
+            pid: '' // 新增子部门给谁 (父部门ID或空）
+        }
+ * @return {*}
+ */
+export function addDepartments (data) {
+  return request({
+    url: '/company/department',
+    method: 'post',
+    data
+  })
+}
