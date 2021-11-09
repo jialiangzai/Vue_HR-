@@ -158,7 +158,7 @@ export function transformTreeData (list) {
       // 没找到=》顶级（一级）部门
       treeData.push(item)
     }
-    console.table(treeData)
+    // console.table(treeData)
   })
 
   return treeData

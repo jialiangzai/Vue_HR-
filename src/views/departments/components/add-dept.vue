@@ -1,5 +1,11 @@
 <template>
-  <el-dialog title="新增部门" :visible="show" width="60%" @close="close">
+  <!-- <el-dialog title="新增部门" :visible="show" width="60%" @close="close"> -->
+  <el-dialog
+    :title="form.id ? '编辑部门' : '新增部门'"
+    :visible="show"
+    width="60%"
+    @close="close"
+  >
     <!-- 新增部门表单=》默认插槽 -->
     <el-form ref="addForm" :model="form" :rules="rules" label-width="120px">
       <el-form-item label="部门名称" prop="name">
@@ -53,7 +59,7 @@
 
 <script>
 import { getEmployeeSimple } from '@/api/employees'
-import { addDepartments } from '@/api/department'
+import { addDepartments, getDepartDetail } from '@/api/department'
 export default {
   props: {
     // 父组件传进来，控制dialog是否显示
@@ -65,9 +71,33 @@ export default {
     currDept: {
       type: Object,
       default: () => ({})
+    },
+    // 所有部门数据
+    allDepts: {
+      type: Array,
+      default: () => []
     }
   },
   data () {
+    /**
+     * value 输入的部门编码
+     * callback 是否验证通过=》通过 callback() | 不通过 callback(new Error('错误信息'))
+     */
+    const validateCode = (rules, value, callback) => {
+      /**
+       * 需求：新增部门输入的部门编码全局唯一
+       * 1. 获取所有部门数据
+       * 2. 根据当前输入对比
+       */
+      const flag = this.allDepts.some((item) => item.code === value)
+      if (flag) {
+        // 有重复
+        callback(new Error('部门编码重复'))
+      } else {
+        // 没有重复
+        callback()
+      }
+    }
     return {
       // 表单数据
       form: {
@@ -84,7 +114,8 @@ export default {
         ],
         code: [
           { required: true, message: '部门编码不能为空', trigger: ['blur', 'change'] },
-          { min: 1, max: 50, message: '部门编码要求1-50个字符', trigger: ['blur', 'change'] }
+          { min: 1, max: 50, message: '部门编码要求1-50个字符', trigger: ['blur', 'change'] },
+          { validator: validateCode, trigger: 'blur' }
         ],
         manager: [
           { required: true, message: '部门负责人不能为空', trigger: ['blur', 'change'] }
@@ -102,10 +133,29 @@ export default {
     this.getPeoples()
   },
   methods: {
+    // 编辑回显数据
+    /**
+       * id 部门ID
+       */
+    async getDepartDetail (id) {
+      const detail = await getDepartDetail(id)
+      // console.log(detail)
+      this.form = detail
+    },
     // 弹层关闭执行
     close () {
       console.log('弹层关闭执行')
       this.$emit('close-dialog', false)
+      // 清理表单输入和校验
+      this.$refs.addForm.resetFields()
+      // 手动重置表单数据(为编辑部门清除表单数据做准备)
+      // 清除编辑时回显的数据
+      this.form = {
+        name: '', // 部门名称
+        code: '', // 部门编码
+        manager: '', // 部门管理者
+        introduce: '' // 部门介绍
+      }
     },
     // 新增部门
     async addDept () {
@@ -115,10 +165,10 @@ export default {
         console.log('校验通过')
         // console.log('校验通过')
         /**
-         * 1. 调用接口新增
-         * 2. 组织架构列表刷新
-         * 3. 关闭弹层
-         */
+           * 1. 调用接口新增
+           * 2. 组织架构列表刷新
+           * 3. 关闭弹层
+           */
         // 新增
         // 需要pid=》1. pid的值是父部门id（新增子部门） 2. pid是空（新增顶级部门）
         await addDepartments({

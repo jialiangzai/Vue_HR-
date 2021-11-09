@@ -55,8 +55,12 @@
                       <span> 操作<i class="el-icon-arrow-down" /> </span>
                       <!-- 下拉菜单 -->
                       <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>添加子部门</el-dropdown-item>
-                        <el-dropdown-item>编辑部门</el-dropdown-item>
+                        <el-dropdown-item @click.native="addDept(data, 1)">
+                          添加子部门
+                        </el-dropdown-item>
+                        <el-dropdown-item @click.native="addDept(data, 2)">
+                          编辑部门
+                        </el-dropdown-item>
                         <el-dropdown-item @click.native="delDept(data)">
                           删除部门
                         </el-dropdown-item>
@@ -72,8 +76,10 @@
     </div>
     <!-- 新增部门 -->
     <AddDept
+      ref="editDept"
       :show="show"
       :curr-dept="currDept"
+      :all-depts="allDepts"
       @update-list="getDepartData"
       @close-dialog="show = $event"
     />
@@ -111,8 +117,9 @@ export default {
       company: { name: '', manager: '' },
       show: false,
       // 当前操作部门数据
-      currDept: null
-
+      currDept: null,
+      // 所有部门数据
+      allDepts: []
     }
   },
   created () {
@@ -141,11 +148,12 @@ export default {
     },
     async getDepartData () {
       const { companyName, depts } = await getDepartments()
-      console.table(depts)
+      // console.table(depts)
       this.company.name = companyName
       // 拿到数据后转换
       // 注意只能调用一次log之后报错,depts改变了,组件库循环有重复的key,避免重复引用
       // console.log('转换结果,', transformTreeData(depts))
+      this.allDepts = depts
       this.departData = transformTreeData(depts)
       /**
    * 根据渲染结构，我们发现，虽然数据已经成功显示出来了，但是它是平铺下来的，并不是树形的，这是因为后端返回来的数据并不是一个嵌套的数组结构，而是一个平铺的数组结构，需要我们自行处理一下
@@ -158,12 +166,19 @@ export default {
     },
     // 新增部门
     /**
-     * currDept 当前要添加子部门的父部门
+     * currDept 当前要添加子部门的父部门.
+     * * type 1 代表新增  2 代表修改
      */
-    addDept (currDept) {
+    addDept (currDept, type) {
       // 存储当前操作的部门
       this.currDept = currDept
+      console.log(type)
       this.show = true
+      if (type === 2) {
+        // 编辑需要调用接口回显数据
+        //  this.$refs.editDept === AddDept组件this
+        this.$refs.editDept.getDepartDetail(currDept.id)
+      }
     }
   }
 }
