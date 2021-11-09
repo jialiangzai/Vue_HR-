@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { getDepartments, delDepartments } from '@/api/depar'
+import { getDepartments, delDepartments } from '@/api/department'
 import { transformTreeData } from '@/utils/index'
 import AddDept from './components/add-dept.vue'
 export default {

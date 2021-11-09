@@ -53,7 +53,7 @@
 
 <script>
 import { getEmployeeSimple } from '@/api/employees'
-import { addDepartments } from '@/api/departments'
+import { addDepartments } from '@/api/department'
 export default {
   props: {
     // 父组件传进来，控制dialog是否显示
