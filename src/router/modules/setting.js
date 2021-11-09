@@ -14,7 +14,7 @@ export default {
       component: () => import('@/views/setting/index'),
       // 配置左侧菜单信息
       meta: {
-        title: '社保', // 菜单名字
+        title: '公司设置', // 菜单名字
         icon: 'setting' // 菜单图标
       }
     }

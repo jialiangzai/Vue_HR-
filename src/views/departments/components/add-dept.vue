@@ -59,7 +59,7 @@
 
 <script>
 import { getEmployeeSimple } from '@/api/employees'
-import { addDepartments, getDepartDetail } from '@/api/department'
+import { addDepartments, getDepartDetail, updateDepartments } from '@/api/department'
 export default {
   props: {
     // 父组件传进来，控制dialog是否显示
@@ -88,8 +88,16 @@ export default {
        * 需求：新增部门输入的部门编码全局唯一
        * 1. 获取所有部门数据
        * 2. 根据当前输入对比
+       * 编辑情况下排除自身  根据form中是否有id判断新增或编辑状态
        */
-      const flag = this.allDepts.some((item) => item.code === value)
+      let flag
+      if (this.form.id) {
+        // 编辑=》当前编辑部门自身已经存在的code编码不能算重复=》排除自身
+        flag = this.allDepts.some((item) => item.code === value && value !== this.currDept.code)
+      } else {
+        // 新增
+        flag = this.allDepts.some((item) => item.code === value)
+      }
       if (flag) {
         // 有重复
         callback(new Error('部门编码重复'))
@@ -169,12 +177,17 @@ export default {
            * 2. 组织架构列表刷新
            * 3. 关闭弹层
            */
-        // 新增
-        // 需要pid=》1. pid的值是父部门id（新增子部门） 2. pid是空（新增顶级部门）
-        await addDepartments({
-          ...this.form, pid: this.currDept.id || ''
-        })
+        if (this.form.id) {
+          await updateDepartments(this.form)
+        } else {
+          // 新增
+          // 需要pid=》1. pid的值是父部门id（新增子部门） 2. pid是空（新增顶级部门）
+          await addDepartments({
+            ...this.form, pid: this.currDept.id || ''
+          })
+        }
         // 通知父组件更新列表
+        // 不管是否是编辑还是新增都要执行的逻辑----通知父级更新
         this.$emit('update-list')
         this.$message.success('新增成功')
         // 关闭弹出层
