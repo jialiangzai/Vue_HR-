@@ -31,7 +31,7 @@
               <el-table-column label="操作">
                 <template #default="{ row }">
                   <!-- 获取当前行数据 -->
-                  <p>{{ row }}</p>
+                  <!-- <p>{{ row }}</p> -->
                   <el-button size="small" type="success">分配权限</el-button>
                   <el-button
                     size="small"

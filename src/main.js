@@ -20,7 +20,9 @@ import * as directs from '@/directives'
 Object.keys(directs).forEach(name => {
   Vue.directive(name, directs[name])
 })
-
+// 生成组件全局注册插件 ------>插件注册use这个插件文件就行了
+import ComponentPlugin from '@/components/index'
+Vue.use(ComponentPlugin)
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
