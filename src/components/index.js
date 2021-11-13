@@ -4,7 +4,7 @@
  * 注册一下Vue.use
  */
 import PageTools from './PageTools'
-// xlsx
+// xlsx UploadExcel
 import UploadExcel from './UploadExcel'
 // 定义数据，里面放全局公共组件的
 const components = [PageTools, UploadExcel]

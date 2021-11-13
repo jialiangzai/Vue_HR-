@@ -80,6 +80,16 @@ export const constantRoutes = [
       meta: { title: '首页', icon: 'dashboard' }
     }]
   },
+  // 静态导入路由上传excel
+  {
+    path: '/import',
+    component: Layout,
+    hidden: true, // 不显示到左侧 不参与遍历
+    children: [{
+      path: '',
+      component: () => import('@/views/import')
+    }]
+  },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

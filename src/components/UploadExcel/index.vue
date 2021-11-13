@@ -13,7 +13,7 @@
       @dragover="handleDragover"
       @dragenter="handleDragover"
     >
-      Drop excel file here or
+      拖拽excel文件到这里
       <el-button
         :loading="loading"
         style="margin-left: 16px"
@@ -21,7 +21,7 @@
         type="primary"
         @click="handleUpload"
       >
-        Browse
+        选择excel文件
       </el-button>
     </div>
   </div>
@@ -31,7 +31,7 @@
 import XLSX from 'xlsx'
 
 export default {
-  // 作为组件注册的标签名
+  // 作为组件注册的标签名UploadExcel
   name: 'UploadExcel',
   props: {
     beforeUpload: Function, // eslint-disable-line
