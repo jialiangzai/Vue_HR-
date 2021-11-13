@@ -8,6 +8,7 @@ export default {
   path: '/employees',
   component: Layout,
   children: [
+    // 员工列表
     {
       path: '', // 空或和父路由路径一样会被默认加载
       name: 'employees', // 权限的标识
@@ -17,6 +18,13 @@ export default {
         title: '员工管理', // 菜单名字
         icon: 'people' // 菜单图标
       }
+    },
+    // 员工详情
+    {
+      path: '/employees/detail/:id',
+      component: () => import('@/views/employees/detail.vue'),
+      hidden: true,
+      meta: { title: '员工详情' }
     }
   ]
 }

@@ -48,6 +48,7 @@ export function addEmployee (data) {
   })
 }
 /**
+ *
  * @description: 导入excel批量添加员工
  * @param {*} data 包含员工信息的数组
  * @return {*}
@@ -56,6 +57,18 @@ export function importEmployees (data) {
   return request({
     url: '/sys/user/batch',
     method: 'post',
+    data
+  })
+}
+/**
+ * @description: 保存/更新员工信息
+ * @param {*} data
+ * @return {*}
+ */
+export function saveUserDetailById (data) {
+  return request({
+    url: `/sys/user/${data.id}`,
+    method: 'put',
     data
   })
 }

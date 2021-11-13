@@ -75,7 +75,13 @@
               <!-- 作用域插槽 -->
               <!-- 删除时传递点击所在行的数据 -->
               <template #default="{ row }">
-                <el-button type="text" size="small">查看</el-button>
+                <el-button
+                  type="text"
+                  size="small"
+                  @click="$router.push(`/employees/detail/${row.id}`)"
+                >
+                  查看
+                </el-button>
                 <el-button type="text" size="small">分配角色</el-button>
                 <el-button type="text" size="small" @click="delElp(row)">
                   删除
