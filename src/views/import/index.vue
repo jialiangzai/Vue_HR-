@@ -66,7 +66,7 @@ export default {
           // 时间格式化 入职+转正
           if (enKey === 'timeOfEntry' || enKey === 'correctionTime') {
             //  excel时间转换(读取excel时间多70年)
-            newUser[enKey] = formatExcelDate(user[key], '/')
+            newUser[enKey] = formatExcelDate(user[key], '-')
           } else {
             // enKey是英文
             newUser[enKey] = user[key]

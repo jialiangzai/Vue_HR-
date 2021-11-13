@@ -17,7 +17,14 @@
               >
                 导入excel
               </el-button>
-              <el-button type="danger" size="small">导出excel</el-button>
+              <el-button
+                type="danger"
+                size="small"
+                :loading="downloadLoading"
+                @click="exportData"
+              >
+                导出excel
+              </el-button>
               <el-button
                 icon="plus"
                 type="primary"
@@ -129,14 +136,88 @@ export default {
       qys: true,
       EnumTypes,
       // 新增对话框
-      showDialog: false
-
+      showDialog: false,
+      downloadLoading: false // 导出loading
     }
   },
   mounted () {
     this.getEmployeeList()
   },
   methods: {
+    // 导出某页员工数据 懒加载引用
+    async exportData () {
+      // 开始导出
+      this.downloadLoading = true
+      // 使用excel导出插件导出的数据
+      // import() 什么时候正式要使用导出功能了,插件才会被正式引入到应用里=>需要script-loader支持 按需导入js模块
+      const excel = await import('@/utils/Export2Excel.js')
+      console.log('excel导出的方法', excel)
+      // 准备需要导出的员工信息map映射关系 自定义的映射 如果是全部就写10个
+      // 注意先后顺序必须要和后台返回的数据保持一致
+      // 1. 中文key做表头（注意先后顺序和后台返回顺序保持一致）
+      // 2. 英文value过滤导出字段使用enHeader
+      const userMap = {
+        '手机号': 'mobile',
+        '姓名': 'username',
+        '入职日期': 'timeOfEntry',
+        '聘用形式': 'formOfEmployment',
+        '工号': 'workNumber',
+        '转正日期': 'correctionTime',
+        '部门': 'departmentName'
+      }
+      // 中文的key----表头
+      const header = Object.keys(userMap)
+      console.log('表头字段', header)
+      const enHeader = Object.values(userMap)
+      console.log('data数据', enHeader)
+      // 把list数据列表转为二维数组并导入excel中做data
+      /**
+       * 把list中的对象转为数组放到数组中
+       */
+      const data = this.transformlist(this.list, enHeader)
+      console.log(data)
+      excel.export_json_to_excel({
+        // 表头 必填
+        header,
+        // header: ['姓名', '工资'],
+        // 表头对应的具体数据 必填
+        data,
+        filename: 'excel-list', // 导出下载的文件名称
+        autoWidth: true, // 导出excel列宽度是否自适应
+        bookType: 'xlsx' // 导出生成的文件类型
+      })
+      // 导出成功并关闭loading
+      this.downloadLoading = false
+    },
+    // list转二维数组 user===>数组
+    /**
+     * [[员工1的信息],[员工二的信息],……]
+     * 准备空数组存储转换结果
+     * 遍历list老数组根据enHeader去转换二维数组
+     */
+    transformlist (list, enHeader) {
+      // 转换后的结果
+      const secondArray = []
+      // 遍历 user表示每一个员工对象
+      list.forEach(user => {
+        // 存储每个员工对象
+        const itemArray = []
+        // 根据enHeader去按需转换
+        // 把enHeader数组===》单个成员的属性(英文后台数据键为英文)对应的值放到itemArray中
+        for (const keyIn in user) {
+          // 指定字段
+          if (enHeader.includes(keyIn)) {
+            // 聘用形式
+            if (keyIn === 'formOfEmployment') {
+              itemArray.push(this.formatForm(user[keyIn]))
+            } else { itemArray.push(user[keyIn]) }
+          }
+          // itemArray.push(user[enHeader])
+        }
+        secondArray.push(itemArray)
+      })
+      return secondArray
+    },
     // 获取员工列表
     async getEmployeeList () {
       const { rows, total } = await getEmployeeList(this.query)
