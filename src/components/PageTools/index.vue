@@ -22,7 +22,9 @@
 </template>
 
 <script>
-export default {}
+export default {
+  name: 'PageTools'
+}
 </script>
 
 <style lang="scss" scoped>

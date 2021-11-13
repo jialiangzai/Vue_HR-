@@ -153,7 +153,7 @@ export default {
     },
     // 使用枚举格式化聘用形式和时间
     formatForm (type) {
-      console.log('在成员管理使用到的枚举数据', EnumTypes.hireType)// 数组
+      // console.log('在成员管理使用到的枚举数据', EnumTypes.hireType)// 数组
       // 容器
       const map = {}
       // 遍历 生成映射关系

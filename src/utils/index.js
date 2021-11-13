@@ -136,7 +136,7 @@ export function transformTreeData (list) {
   list.forEach(item => {
     map[item.id] = item
   })
-  console.log('映射关系：', map)
+  // console.log('映射关系：', map)
   list.forEach(item => {
     // 找父部门
     // 排除pid=-1公司
