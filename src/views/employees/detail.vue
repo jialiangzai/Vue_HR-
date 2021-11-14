@@ -2,11 +2,12 @@
   <div class="employees-container">
     <div class="app-container">
       <el-card>
-        <el-tabs>
-          <el-tab-pane label="登录账户设置">
+        <!-- value / v-model	绑定值，选中选项卡的 name -->
+        <el-tabs v-model="seled">
+          <el-tab-pane label="登录账户设置" name="account">
             <login-setting :user-info="userInfo" />
           </el-tab-pane>
-          <el-tab-pane label="个人详情">
+          <el-tab-pane label="个人详情" name="userInfom">
             <user-info :user-info="userInfo" />
           </el-tab-pane>
         </el-tabs>
@@ -27,7 +28,9 @@ export default {
   },
   data () {
     return {
-      userInfo: {}
+      userInfo: {},
+      // 当前选中的页签
+      seled: 'userInfom'
     }
   },
   mounted () {

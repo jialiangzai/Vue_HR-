@@ -6,8 +6,9 @@
 import PageTools from './PageTools'
 // xlsx UploadExcel
 import UploadExcel from './UploadExcel'
+import UploadImg from './UploadImg'
 // 定义数据，里面放全局公共组件的
-const components = [PageTools, UploadExcel]
+const components = [PageTools, UploadExcel, UploadImg]
 export default {
   /**
    *

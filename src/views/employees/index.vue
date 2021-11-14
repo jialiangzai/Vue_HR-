@@ -47,6 +47,12 @@
           >
             <!-- 一行的数据多列 -->
             <el-table-column label="序号" type="index" />
+            <el-table-column label="头像" prop="staffPhoto">
+              <!-- 作用域插槽 -->
+              <template #default="{ row }">
+                <img class="staff" :src="row.staffPhoto" />
+              </template>
+            </el-table-column>
             <el-table-column label="姓名" prop="username" />
             <el-table-column label="工号" prop="workNumber" />
             <!-- <el-table-column label="聘用形式" prop="formOfEmployment"> -->
@@ -290,4 +296,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.employees-container {
+  .staff {
+    width: 70px;
+    height: 70px;
+    border-radius: 100%;
+  }
+}
 </style>
