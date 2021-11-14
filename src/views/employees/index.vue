@@ -50,7 +50,11 @@
             <el-table-column label="头像" prop="staffPhoto">
               <!-- 作用域插槽 -->
               <template #default="{ row }">
-                <img class="staff" :src="row.staffPhoto" />
+                <img
+                  class="staff"
+                  :src="row.staffPhoto"
+                  @click="clickShowCodeDialog(row.staffPhoto)"
+                />
               </template>
             </el-table-column>
             <el-table-column label="姓名" prop="username" />
@@ -70,8 +74,6 @@
 
               <el-switch
                 v-model="qys"
-                active-text="出勤"
-                inactive-text="缺勤"
                 active-color="#13ce66"
                 inactive-color="#ff4949"
               />
@@ -116,11 +118,24 @@
         </div>
       </el-card>
     </div>
-    <!-- 因为遮罩问题 v2只有一个跟元素节点 -->
+    <!--新增员工弹出对话框 因为遮罩问题 v2只有一个跟元素节点 -->
     <AddEmployee
       :show-dialog="showDialog"
       @close-dialog="showDialog = $event"
     />
+    <!-- 二维码弹出层 -->
+    <!-- 分享展示, 预览的二维码的弹层 -->
+    <el-dialog
+      title="二维码"
+      width="300px"
+      :visible="showCodeDialog"
+      @close="showCodeDialog = false"
+    >
+      <!-- 二维码 用canvas绘制 用插件QrCode把地址转为二维码-->
+      <el-row type="flex" align="center" justify="center">
+        <canvas ref="myCanvas" />
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 
@@ -129,6 +144,9 @@ import { getEmployeeList, delEmployee } from '@/api/employees'
 import EnumTypes from '@/api/constant/employees'
 import AddEmployee from './components/add-employee'
 // console.log('枚举数据', EnumTypes)
+// 基本用法
+import QrCode from 'qrcode'
+
 export default {
   components: {
     AddEmployee
@@ -148,14 +166,32 @@ export default {
       qys: true,
       EnumTypes,
       // 新增对话框
+      // 新增员工
       showDialog: false,
-      downloadLoading: false // 导出loading
+      downloadLoading: false, // 导出loading
+      // 二维码
+      showCodeDialog: false
     }
   },
   mounted () {
     this.getEmployeeList()
   },
   methods: {
+    // 点击头像获取二维码
+    clickShowCodeDialog (url) {
+      // 拿到头像的字符串
+      // console.log(url)
+      if (!url) return // 有图片才显示弹层
+      this.showCodeDialog = true
+      // dom为一个canvas的dom对象， info是转化二维码的信息
+      // 避坑 之前对话框是没有数据的现在要渲染数据就要更新DOM，但是更新是必须要拿到url再去更新是异步的
+      // Dialog 的内容是懒渲染的，即在第一次被打开之前，传入的默认 slot 不会被渲染到 DOM 上。
+      // 因此，如果需要执行 DOM 操作，或通过 ref 获取相应组件，请在 open 事件回调中进行。
+      // QrCode.toCanvas(this.$refs.myCanvas, url)
+      this.$nextTick(() => {
+        QrCode.toCanvas(this.$refs.myCanvas, url)
+      })
+    },
     // 导出某页员工数据 懒加载引用
     async exportData () {
       // 开始导出

@@ -57,6 +57,8 @@
 </template>
 <script>
 import { saveUserDetailById } from '@/api/employees'
+import { mapActions } from 'vuex'
+
 export default {
   props: {
     userInfo: {
@@ -72,12 +74,23 @@ export default {
       }
     }
   },
+
   methods: {
+    ...mapActions('user', ['getUserInfoAction']),
+
     updates () {
       // 校验
       this.$refs.userInfo.validate(async valid => {
         if (!valid) return
         await saveUserDetailById(this.userInfo)
+        if (this.ids === this.userInfo.id) {
+          this.getUserInfoAction()
+        }
+        console.log(this.$route.params.id)
+        if (this.$route.params.id === this.userInfo.id) {
+          this.getUserInfoAction()
+        }
+
         this.$message.success('更新成功！')
       })
     }

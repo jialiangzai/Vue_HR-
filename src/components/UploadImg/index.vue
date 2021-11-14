@@ -3,7 +3,9 @@
     自定义上传的回调 :http-request="upload"
      show-file-list 展示多文件上传列表
       on-success上传成功之后执行的回调
-      before-upload 上传之前执行的回调-->
+      before-upload 上传之前执行的回调
+      回显致之前存储的图片地址
+      如果重新上传就会把之前上传的cos地址存储到外边userInfo的staffPhoto-->
   <el-upload
     class="avatar-uploader"
     action="#"
@@ -36,6 +38,7 @@ const cos = new COS({
   SecretId: 'AKIDc2C5h28yXpqa3GCrELBk23mEPIuFJ6cr', // 身份识别ID
   SecretKey: 'zh9LGuHNCjzyg7HAm7AwRfbHkyvbtud5' // 身份秘钥
 })
+// 如果更改的是登录人同步头像
 
 export default {
   name: 'UploadImg',
@@ -47,7 +50,7 @@ export default {
   },
   data () {
     return {
-      imageUrl: '',
+      // imageUrl: '',
       // 进度条
       showProgress: false,
       // 进度 0-100
@@ -88,7 +91,7 @@ export default {
           // 上传成功之后
           // err 是null 表明上传成功 data 会包含Location图片存储地址
           if (!err) {
-            this.imageUrl = `https://${data.Location}`
+            // this.imageUrl = `https://${data.Location}`
             console.log('图片地址', this.imageUrl)
             console.log('上云返回的地址', data.Location)
           }
@@ -100,8 +103,10 @@ export default {
               this.showProgress = false
               // 重置进度
               this.percentage = 0
+              // 不能直接修改父组件staffPhoto数据 当然也可以直接传递子组件对象局部更改不推荐
               // this.imageUrl = `https://${data.Location}`
               this.$emit('update:staffPhoto', `https://${data.Location}`)
+              console.log(this.$route.params.id)
             }, 800)
           }
         })
