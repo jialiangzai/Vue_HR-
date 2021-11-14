@@ -22,7 +22,7 @@
     <el-progress
       v-show="showProgress"
       type="circle"
-      :percentage="percent"
+      :percentage="percentage"
       class="progress"
     />
   </el-upload>
@@ -50,8 +50,8 @@ export default {
       imageUrl: '',
       // 进度条
       showProgress: false,
-      // 进度
-      percent: 0
+      // 进度 0-100
+      percentage: 0
     }
   },
   methods: {
@@ -63,6 +63,7 @@ export default {
     upload (res) {
       // 触发回调 拿到 file对象
       console.log(res.file)
+      // 开始上传的时候显示进度条
       this.showProgress = true
       // 后续调用腾讯云cos后台接口上传图片
       if (res.file) {
@@ -76,12 +77,14 @@ export default {
           Body: res.file, // 上传文件对象
           onProgress: (progressData) => {
             // 上传的进度 百分比的数值
-            console.log(JSON.stringify(progressData)) // percent
-            this.percent = progressData.percent * 100
+            // console.log('当前图片的上传进度', JSON.stringify(progressData)) // percent
+            console.log('当前图片的上传进度', JSON.stringify(progressData.percent)) // percent
+            // progressData进度对象 percent表示进度0-1
+            this.percentage = progressData.percent * 100
           }
         }, (err, data) => {
           // 这里要是箭头函数不然后期取不到this
-          console.log(err || data)
+          // console.log(err || data)
           // 上传成功之后
           // err 是null 表明上传成功 data 会包含Location图片存储地址
           if (!err) {
@@ -93,8 +96,10 @@ export default {
           if (data.statusCode === 200) {
             // 有延迟
             setTimeout(() => {
+              // 关闭进度条显示
               this.showProgress = false
-              this.percent = 0
+              // 重置进度
+              this.percentage = 0
               // this.imageUrl = `https://${data.Location}`
               this.$emit('update:staffPhoto', `https://${data.Location}`)
             }, 800)
