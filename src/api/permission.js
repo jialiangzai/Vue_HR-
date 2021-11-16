@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 获取权限列表
+// 获取权限列表可以不穿参数
 export function getPermissionList (params) {
   return request({
     url: '/sys/permission',
