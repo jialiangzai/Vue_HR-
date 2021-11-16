@@ -63,6 +63,7 @@
         </el-form-item>
         <el-form-item label="权限启用">
           <el-switch
+            v-model="formData.enVisible"
             active-text="启用"
             active-value="1"
             inactive-text="不启用"
@@ -91,7 +92,7 @@ export default {
       showDialog: false,
       // 新增表单的数据===》可复用(编辑)
       formData: {
-        enVisible: '0', // 暂时不开启 switch
+        enVisible: '1', // 开启权限控制 switch  标识
         name: '', // 名称
         code: '', // 权限标识(身份的标识控制权限)
         description: '', // 描述
