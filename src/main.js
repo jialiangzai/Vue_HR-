@@ -36,7 +36,10 @@ Vue.use(ComponentPlugin)
 Vue.use(ElementUI)
 // 如果想要中文版 element-ui，按如下方式声明
 // Vue.use(ElementUI)
-
+// 重写原生js日志的方法 用于上线后生产环境重写日志
+// console.log(1)
+// console.log = () => ({})
+// console.log = console.table = () => ({})
 Vue.config.productionTip = false
 
 new Vue({
