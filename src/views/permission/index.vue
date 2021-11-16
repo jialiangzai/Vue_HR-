@@ -32,7 +32,7 @@
               <el-button type="text" @click="editPermission(row.id)">
                 编辑
               </el-button>
-              <el-button type="text" @click="delPermission(row.id)">
+              <el-button type="text" @click="delPermission(row)">
                 删除
               </el-button>
             </template>
@@ -110,7 +110,7 @@ export default {
     this.GetPermissionList()
   },
   methods: {
-    // 编辑
+    // 编辑 权限点
     async editPermission (id) {
       // 数据回显
       this.showDialog = true
@@ -122,11 +122,19 @@ export default {
         console.log(error)
       }
     },
-    // 删除
-    async delPermission (id) {
+    // 删除 权限点
+    // 判断是否是页面权限或功能权限
+    async delPermission (row) {
+      console.log('当前点击删除的权限点', row)
       try {
-        await this.$confirm('确定要删除该权限吗?', '温馨提示')
-        await delPermission(id)
+        await this.$confirm(`确定要删除${row.name}权限吗?`, '温馨提示')
+        // 开始判断 存在孩子并且不是空
+        if (row.children && row.children.length > 0) {
+          return this.$message.warning('请先清空页面功能权限')
+        } else {
+          // 功能权限点 正常删除
+          await delPermission(row.id)
+        }
         this.GetPermissionList()
         this.$message.success('删除成功')
       } catch (error) {
@@ -147,7 +155,7 @@ export default {
         pid: '' // 添加到哪个节点下
       }
     },
-    // 确认实现新增
+    // 确认实现新增 权限点
     clickSubmit () {
       /** 超级管理员才能加而且是规范的
        * 整体校验
