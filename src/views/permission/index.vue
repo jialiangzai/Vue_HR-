@@ -29,8 +29,12 @@
               >
                 添加
               </el-button>
-              <el-button type="text">编辑</el-button>
-              <el-button type="text">删除</el-button>
+              <el-button type="text" @click="editPermission(row.id)">
+                编辑
+              </el-button>
+              <el-button type="text" @click="delPermission(row.id)">
+                删除
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -39,18 +43,23 @@
     <!-- 新增权限点==》type=1能不能看 type=2能不能操作 -->
     <el-dialog
       :visible="showDialog"
-      title="新增权限"
-      @close="showDialog = false"
+      :title="formData.id ? '编辑权限' : '新增权限'"
+      @close="close"
     >
-      <el-form label-width="100px" :model="formData" :rules="rules">
+      <el-form
+        ref="addForm"
+        label-width="100px"
+        :model="formData"
+        :rules="rules"
+      >
         <el-form-item label="权限名称" prop="name">
-          <el-input />
+          <el-input v-model="formData.name" />
         </el-form-item>
         <el-form-item label="权限标识" prop="code">
-          <el-input />
+          <el-input v-model="formData.code" />
         </el-form-item>
         <el-form-item label="权限描述">
-          <el-input />
+          <el-input v-model="formData.description" />
         </el-form-item>
         <el-form-item label="权限启用">
           <el-switch
@@ -64,14 +73,14 @@
       <template #footer>
         <div style="text-align: right">
           <el-button @click="showDialog = false">取消</el-button>
-          <el-button type="primary">确定</el-button>
+          <el-button type="primary" @click="clickSubmit">确定</el-button>
         </div>
       </template>
     </el-dialog>
   </div>
 </template>
 <script>
-import { getPermissionList } from '@/api/permission'
+import { getPermissionList, addPermission, delPermission, getPermissionDetail, updatePermission } from '@/api/permission'
 import { transformTreeData } from '@/utils'
 export default {
   name: 'Permission',
@@ -101,15 +110,82 @@ export default {
     this.GetPermissionList()
   },
   methods: {
+    // 编辑
+    async editPermission (id) {
+      // 数据回显
+      this.showDialog = true
+      try {
+        const data = await getPermissionDetail(id)
+        console.log('编辑数据', data)
+        this.formData = data
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    // 删除
+    async delPermission (id) {
+      try {
+        await this.$confirm('确定要删除该权限吗?', '温馨提示')
+        await delPermission(id)
+        this.GetPermissionList()
+        this.$message.success('删除成功')
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    // 关闭
+    close () {
+      this.showDialog = false
+      this.$refs.addForm.resetFields()
+      this.formData = {
+        enVisible: '0', // 暂时不开启 switch
+        name: '', // 名称
+        code: '', // 权限标识(身份的标识控制权限)
+        description: '', // 描述
+        type: '', // 类型
+        // 权限点父节点ID（'0'代表是页面权限 | '604f7df5f900be1850edb152'代表页面下功能权限）
+        pid: '' // 添加到哪个节点下
+      }
+    },
+    // 确认实现新增
+    clickSubmit () {
+      /** 超级管理员才能加而且是规范的
+       * 整体校验
+       * 调接口新增或编辑更新
+       * 刷新列表
+       * 提示
+       */
+      // 校验
+      this.$refs.addForm.validate(async valid => {
+        if (!valid) return
+        // 编辑和新增区别 接口不同
+        if (this.formData.id) {
+          await updatePermission(this.formData)
+        } else {
+          await addPermission(this.formData)
+        }
+        this.$message.success('操作成功')
+        this.GetPermissionList()
+        this.showDialog = false
+      })
+      /**
+       * try catch
+       * await this.$refs.addForm.validate()
+       *省略了if推荐
+       */
+    },
     /**
      * type表示添加的是页面权限还是功能权限
      * pid表示添加到哪个节点
      */
+    // 新增权限准备
     addPermi (type, pid) {
       // 显示弹层
       this.showDialog = true
       // 存储type和pid
+      // 记录当前添加的权限点类型
       this.formData.type = type
+      // 记录父节点（添加到哪里）
       this.formData.pid = pid
     },
     async GetPermissionList () {
@@ -118,6 +194,7 @@ export default {
       // this.list = data
       this.list = transformTreeData(data)
     }
+
   }
 }
 </script>
