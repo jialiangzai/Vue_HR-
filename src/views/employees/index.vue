@@ -184,10 +184,10 @@ export default {
       if (!url) return // 有图片才显示弹层
       this.showCodeDialog = true
       // dom为一个canvas的dom对象， info是转化二维码的信息
-      // 避坑 之前对话框是没有数据的现在要渲染数据就要更新DOM，但是更新是必须要拿到url再去更新是异步的
       // Dialog 的内容是懒渲染的，即在第一次被打开之前，传入的默认 slot 不会被渲染到 DOM 上。
-      // 因此，如果需要执行 DOM 操作，或通过 ref 获取相应组件，请在 open 事件回调中进行。
-      // QrCode.toCanvas(this.$refs.myCanvas, url)
+      // 绘制二维码===》打开弹层===》canvas还没渲染等下次渲染执行====》解决让他渲染好canvas才执行后面的转二维码
+      // 点击图片控制了dialog显示/数据驱动视图，dialog内用了默认插槽显示canvas，此时异步更新之后才能渲染canvas元素
+      // 3种方法：延时器setTimeout、this.$nextTick 、第二种的升级Y因为他返回promise对象所以await和async即await this.$nextTick() 之后才toCanvas
       this.$nextTick(() => {
         QrCode.toCanvas(this.$refs.myCanvas, url)
       })
