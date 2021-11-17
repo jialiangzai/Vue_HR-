@@ -111,7 +111,7 @@
       </span>
     </el-dialog>
     <!-- 分配权限 -->
-    <AssignPerm :show-assign-dialog.sync="showAssignDialog" />
+    <AssignPerm ref="perm" :show-assign-dialog.sync="showAssignDialog" />
   </div>
 </template>
 
@@ -160,6 +160,7 @@ export default {
     assignPerm (row) {
       console.log('当前点击的角色信息', row)
       this.showAssignDialog = true
+      this.$refs.perm.getRoleCheck(row.id)
     },
     // 获取角色列表
     async getList () {

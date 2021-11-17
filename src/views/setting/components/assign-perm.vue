@@ -20,7 +20,7 @@
     <!-- 权限点数据展示 -->
     <template #footer>
       <el-button @click="closeAssignDialog">取消</el-button>
-      <el-button type="primary">确定</el-button>
+      <el-button type="primary" @click="savePer">确定</el-button>
     </template>
   </el-dialog>
 </template>
@@ -28,7 +28,7 @@
 <script>
 import { getPermissionList } from '@/api/permission'
 import { transformTreeData } from '@/utils'
-import { getRoleDetail } from '@/api/setting'
+import { getRoleDetail, assignPerm } from '@/api/setting'
 export default {
   props: {
     showAssignDialog: {
@@ -47,8 +47,20 @@ export default {
   },
 
   methods: {
+    // 点击确认实现权限的分配
+    async savePer () {
+      await assignPerm({
+        id: this.rolesId,
+        //  返回目前被选中的节点的 key 所组成的数组
+        permIds: this.$refs.tree.getCheckedKeys()
+      })
+      this.$message.success('分配成功')
+      this.$emit('update:showAssignDialog', false)
+    },
     closeAssignDialog () {
       this.$emit('update:showAssignDialog', false)
+      // 重置选中状态
+      this.$refs.tree.setCheckedKeys([])
     },
     // 获取
     async GetPermissionList () {
@@ -60,9 +72,11 @@ export default {
     // 数据回显选中的权限
     async getRoleCheck (id) {
       this.rolesId = id
-      const data = await getRoleDetail(this.rolesId)
-      console.log('当前数据', data)
+      const { permIds } = await getRoleDetail(id)
+      console.log('当前数据', permIds)
       // this.$refs.tree.setCheckedKeys()
+      // 实现数据回显,tree实例的的方法
+      this.$refs.tree.setCheckedKeys(permIds)
     }
   }
 }
