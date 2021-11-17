@@ -41,7 +41,7 @@ export function getUserInfo () {
 }
 /**
  * 之前登录后获取头像数据已经封装过（正常应该是两个接口）
- * @description: 获取用户头像及详情
+ * @description: 获取用户头像及详情及用户角色
  * @param {*} id 用户id
  * @return {*}
  */

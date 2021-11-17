@@ -90,7 +90,13 @@
                 >
                   查看
                 </el-button>
-                <el-button type="text" size="small">分配角色</el-button>
+                <el-button
+                  type="text"
+                  size="small"
+                  @click="openRoleDialog(row)"
+                >
+                  分配角色
+                </el-button>
                 <el-button type="text" size="small" @click="delElp(row)">
                   删除
                 </el-button>
@@ -136,6 +142,8 @@
         <canvas ref="myCanvas" />
       </el-row>
     </el-dialog>
+    <!-- 分配角色 -->
+    <assignRole ref="arole" :show-role-dialog.sync="showRoleDialog" />
   </div>
 </template>
 
@@ -146,10 +154,13 @@ import AddEmployee from './components/add-employee'
 // console.log('枚举数据', EnumTypes)
 // 基本用法
 import QrCode from 'qrcode'
+// 分配角色
+import assignRole from './components/assign-role.vue'
 
 export default {
   components: {
-    AddEmployee
+    AddEmployee,
+    assignRole
   },
   data () {
     return {
@@ -170,13 +181,23 @@ export default {
       showDialog: false,
       downloadLoading: false, // 导出loading
       // 二维码
-      showCodeDialog: false
+      showCodeDialog: false,
+      // 角色
+      showRoleDialog: false
     }
   },
   mounted () {
     this.getEmployeeList()
   },
   methods: {
+    // 角色
+    openRoleDialog (row) {
+      console.log('当前点击的员工数据', row)
+      // 数据回显
+      this.showRoleDialog = true
+      // 通过ref调用子组件方法获取当前用户已授权角色回显
+      this.$refs.arole.getUserRoles(row.id)
+    },
     // 点击头像获取二维码
     clickShowCodeDialog (url) {
       // 拿到头像的字符串
