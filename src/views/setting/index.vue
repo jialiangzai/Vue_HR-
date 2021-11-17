@@ -32,7 +32,13 @@
                 <template #default="{ row }">
                   <!-- 获取当前行数据 -->
                   <!-- <p>{{ row }}</p> -->
-                  <el-button size="small" type="success">分配权限</el-button>
+                  <el-button
+                    size="small"
+                    type="success"
+                    @click="assignPerm(row)"
+                  >
+                    分配权限
+                  </el-button>
                   <el-button
                     size="small"
                     type="primary"
@@ -104,12 +110,18 @@
         <el-button type="primary" @click="addRole">确定</el-button>
       </span>
     </el-dialog>
+    <!-- 分配权限 -->
+    <AssignPerm :show-assign-dialog.sync="showAssignDialog" />
   </div>
 </template>
 
 <script>
 import { getRoleList, deleteRole, addRole, getRoleDetail, updateRole } from '@/api/setting'
+import AssignPerm from './components/assign-perm.vue'
 export default {
+  components: {
+    AssignPerm
+  },
   data () {
     return {
       // 角色列表
@@ -126,6 +138,8 @@ export default {
       total: 0,
       // 控制弹出层显示
       showDialog: false,
+      // 权限分配显示
+      showAssignDialog: false,
       // 表单数据（新增|编辑）
       roleForm: {
         name: '',
@@ -142,6 +156,11 @@ export default {
     this.getList()
   },
   methods: {
+    // 点击分配权限
+    assignPerm (row) {
+      console.log('当前点击的角色信息', row)
+      this.showAssignDialog = true
+    },
     // 获取角色列表
     async getList () {
       const { total, rows } = await getRoleList(this.query)
