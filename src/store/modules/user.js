@@ -97,7 +97,7 @@
 // 导入持久化方法
 import * as auth from '@/utils/auth'
 import { login, getUserInfo, getUserDetailById } from '@/api/user'
-
+import { resetRouter } from '@/router'
 export default {
   namespaced: true,
   // 定义变量
@@ -141,12 +141,18 @@ export default {
     /**
      * 后台退出---调接口
      * 前端退出----清除本地数据
+     * 重置路由----动态追加的动态路由的缓存(避免浏览器不刷新不关闭下个登录人可以使用上个登录人的权限访问页面)
+     * 清除routes模块中的菜单数据只留下静态路由
      * @param {*} param0
      * @param {*} formData
      */
     logout ({ commit }) {
       commit('delToken')
       commit('delUserInfo')
+      resetRouter()
+      // vuex不能子模块跨子模块(非父子)调用mutations
+      // 子模块调用子模块的mutations 可以 将 commit的第三个参数 设置成  { root: true } 就表示当前的context不是子模块了 而是父模块
+      commit('routes/setMenuList', [], { root: true })
     },
 
     /**
