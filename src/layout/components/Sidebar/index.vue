@@ -15,7 +15,7 @@
         mode="vertical"
       >
         <!-- 菜单子项 -->
-          <!-- :key="route.path" -->
+        <!-- :key="route.path" -->
         <sidebar-item
           v-for="route in routes"
           :key="route.path"
@@ -44,7 +44,8 @@ export default {
       console.log('所有路由规则：', this.$router.options.routes)
       // this.$router.options.routes只能获取静态路由规则
       // 路由规则=静态+动态解决vuex
-      return this.$router.options.routes
+      // return this.$router.options.routes
+      return this.$store.state.routes.menuList
     },
     activeMenu () {
       const route = this.$route

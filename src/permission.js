@@ -43,6 +43,7 @@ router.beforeEach(async (to, from, next) => {
           return roles.menus.includes(route.children[0].name)
         })
         console.log('获取当前登录人可以看的页面:', canLook)
+        store.commit('routes/setMenuList', canLook)
         // 把动态路由添加到应用的路由表里 addRoutes只能追加到静态路由后面于是出现404在动态路由之前
         // 解决：追加到动态路由之后
         router.addRoutes([...canLook, { path: '*', redirect: '/404', hidden: true }])
