@@ -10,7 +10,7 @@ export default {
   children: [
     {
       path: '', // 空或和父路由路径一样会被默认加载
-      name: 'setting', // 权限的标识
+      name: 'settings', // 权限的标识
       component: () => import('@/views/setting/index'),
       // 配置左侧菜单信息
       meta: {

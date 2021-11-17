@@ -1,4 +1,4 @@
-import router from './router' // 路由实例
+import router, { asyncRoutes } from './router' // 路由实例
 import store from './store' // vue实例
 
 import NProgress from 'nprogress' // progress bar
@@ -26,7 +26,25 @@ router.beforeEach(async (to, from, next) => {
       // 在放行之后获取用户登录信息 此时有token js中用实例不能用vuex 发送请求，路由守卫做数据不用存储本地 而且用户信息是可变的 加前缀
       // 判断如果没有获取用户信息才进行调用
       if (!store.getters.name) {
-        await store.dispatch('user/getUserInfoAction')
+        // promise返回的权限数据
+        const roles = await store.dispatch('user/getUserInfoAction')
+        console.log('当前登录人的权限数据', roles)
+        /**
+         * 权限控制
+         * 1.获取当前登录人可以访问页面的身份标识 守卫中获取vuex数据userinfo
+         * 2.根据当前登录人的访问页面的身份标识匹配动态路由  =====》留下有身份标识的页面路由规则 filter
+         * 3.把上一步留下的有身份标识的路由跳转规则动态追加到路由表routes中
+         */
+        // 留下有身份标识的页面路由规则
+        const canLook = asyncRoutes.filter(route => {
+          // route表示每一个动态规则
+          // 根据标识menus和route过滤roles.menus是数组,子路由规则children的第一个name是路由规则的唯一标识
+          // 一致name和menus的标识才可以访问不然也是无法访问的
+          return roles.menus.includes(route.children[0].name)
+        })
+        console.log('获取当前登录人可以看的页面:', canLook)
+        // 把动态路由添加到应用的路由表里
+        router.addRoutes(canLook)
       }
     }
   } else {

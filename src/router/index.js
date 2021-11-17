@@ -44,7 +44,7 @@ import attendancesRouter from './modules/attendances'
 import salarysRouter from './modules/salarys'
 import settingRouter from './modules/setting'
 import socialRouter from './modules/social'
-// 动态路由
+// 动态路由 ====>动态路由导出为权限做准备过滤标识
 export const asyncRoutes = [
   departmentsRouter,
   settingRouter,
@@ -97,8 +97,8 @@ export const constantRoutes = [
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }), // 每次切换页面让滚动条回到顶部
-  routes: [...constantRoutes, ...asyncRoutes]
-  // routes: [constantRoutes]
+  // routes: [...constantRoutes, ...asyncRoutes]
+  routes: [...constantRoutes]
 })
 
 const router = createRouter()

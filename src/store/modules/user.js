@@ -174,7 +174,8 @@ export default {
       console.log(userInfo, photoInfo)
       // 浅拷贝
       commit('setUserInfo', { ...userInfo, ...photoInfo })
-      return userInfo
+      // 返回权限信息
+      return userInfo.roles
     }
   }
 }
