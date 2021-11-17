@@ -38,13 +38,14 @@ router.beforeEach(async (to, from, next) => {
         // 留下有身份标识的页面路由规则
         const canLook = asyncRoutes.filter(route => {
           // route表示每一个动态规则
-          // 根据标识menus和route过滤roles.menus是数组,子路由规则children的第一个name是路由规则的唯一标识
+          // 根据标识menus和route的name过滤roles.menus是数组,子路由规则children的第一个name是路由规则的唯一标识
           // 一致name和menus的标识才可以访问不然也是无法访问的
           return roles.menus.includes(route.children[0].name)
         })
         console.log('获取当前登录人可以看的页面:', canLook)
-        // 把动态路由添加到应用的路由表里
-        router.addRoutes(canLook)
+        // 把动态路由添加到应用的路由表里 addRoutes只能追加到静态路由后面于是出现404在动态路由之前
+        // 解决：追加到动态路由之后
+        router.addRoutes([...canLook, { path: '*', redirect: '/404', hidden: true }])
       }
     }
   } else {

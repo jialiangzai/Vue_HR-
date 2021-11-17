@@ -89,9 +89,10 @@ export const constantRoutes = [
       path: '',
       component: () => import('@/views/import')
     }]
-  },
+  }
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  // { path: '*', redirect: '/404', hidden: true }
+  // 路由规则已经追加到路由表中于此
 ]
 // 工厂函数 创建路由实例
 const createRouter = () => new Router({
