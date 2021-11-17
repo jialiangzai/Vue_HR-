@@ -42,6 +42,8 @@ export default {
     // 动态计算路由配置规则=》生成菜单数据
     routes () {
       console.log('所有路由规则：', this.$router.options.routes)
+      // this.$router.options.routes只能获取静态路由规则
+      // 路由规则=静态+动态解决vuex
       return this.$router.options.routes
     },
     activeMenu () {
