@@ -143,7 +143,7 @@
       </el-row>
     </el-dialog>
     <!-- 分配角色 -->
-    <assignRole ref="arole" :show-role-dialog.sync="showRoleDialog" />
+    <assignRole ref="roleDialog" :show-role-dialog.sync="showRoleDialog" />
   </div>
 </template>
 
@@ -194,9 +194,9 @@ export default {
     openRoleDialog (row) {
       console.log('当前点击的员工数据', row)
       // 数据回显
-      this.showRoleDialog = true
       // 通过ref调用子组件方法获取当前用户已授权角色回显
-      this.$refs.arole.getUserRoles(row.id)
+      this.$refs.roleDialog.getUserRoles(row.id)
+      this.showRoleDialog = true
     },
     // 点击头像获取二维码
     clickShowCodeDialog (url) {

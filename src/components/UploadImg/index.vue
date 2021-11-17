@@ -35,8 +35,8 @@
 import COS from 'cos-js-sdk-v5'
 // 初始化cos云上传实例(后台有上传方法)必传身份秘钥
 const cos = new COS({
-  SecretId: 'AKIDc2C5h28yXpqa3GCrELBk23mEPIuFJ6cr', // 身份识别ID
-  SecretKey: 'zh9LGuHNCjzyg7HAm7AwRfbHkyvbtud5' // 身份秘钥
+  SecretId: 'AKID2JMPE1qvDJCmTvdDTqxFgssaAVbRkxoR', // 身份识别ID
+  SecretKey: 'Xw62h4GDwa4JIzUGqKgZyCAzwf9N5f06' // 身份秘钥
 })
 // 如果更改的是登录人同步头像
 
@@ -73,7 +73,7 @@ export default {
         // 执行上传操作
         // putObject图片上云方法有两个参数第一个是{上传的配置}，第二个是成功后的回调函数
         cos.putObject({
-          Bucket: 'xin-1308304235', /* 存储桶名字 hrsass-1255477649 */
+          Bucket: 'hrsass-1255477649', /* 存储桶名字 hrsass-1255477649 */
           Region: 'ap-beijing', /* 存储桶所在地域，必须字段 ap-beijing */
           Key: res.file.name, /* 文件名必须是唯一的 相同名字图片重复上传，只会保留第一次 */
           StorageClass: 'STANDARD', // 上传模式, 标准模式对象的存储类型，枚举值为：STANDARD、STANDARD_IA、ARCHIVE、DEEP_ARCHIVE

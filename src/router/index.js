@@ -98,6 +98,7 @@ const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }), // 每次切换页面让滚动条回到顶部
   routes: [...constantRoutes, ...asyncRoutes]
+  // routes: [constantRoutes]
 })
 
 const router = createRouter()

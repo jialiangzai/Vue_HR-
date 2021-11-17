@@ -6,8 +6,8 @@
     @close="closeDialog"
   >
     <!-- 这里准备复选框 -->
-    <el-checkbox-group v-model="roleIds">
-      <el-checkbox v-for="it in list" :key="it.id" :label="it.id">
+    <el-checkbox-group v-model="selRoles">
+      <el-checkbox v-for="it in roleList" :key="it.id" :label="it.id">
         {{ it.name }}
       </el-checkbox>
       <!-- ：label复选框选中值；roleIds数组记录选中的值 -->
@@ -26,7 +26,9 @@
 <script>
 // 列表
 import { getRoleList } from '@/api/setting'
+// 选中数据回显
 import { getUserDetailById } from '@/api/user'
+// 分配角色
 import { assignRoles } from '@/api/employees'
 export default {
   props: {
@@ -38,21 +40,23 @@ export default {
   },
   data () {
     return {
-      list: [],
+      // 角色列表所有
+      roleList: [],
       // 选中角色列表
-      roleIds: [],
+      selRoles: [],
       // 用户ID
       userId: ''
     }
   },
   created () {
-    this.getRoleList()
+    this.getRoleLists()
   },
   methods: {
     // 确定入库
     async saveRoles () {
       try {
-        await assignRoles({ id: this.userId, roleIds: this.roleIds })
+        // 这里注意出入参数对象----排了20分钟
+        await assignRoles({ id: this.userId, roleIds: this.selRoles })
         this.$message.success('操作成功')
         this.$emit('update:show-role-dialog', false)
       } catch (error) {
@@ -68,16 +72,16 @@ export default {
       const { roleIds } = await getUserDetailById(id)
       // 控制当前选中用户的角色
       console.log('当前用户选过：', roleIds)
-      this.roleIds = roleIds || []
+      this.selRoles = roleIds || []
       // 存储当前点击的用户ID
       this.userId = id
     },
     // 获取列表
-    async getRoleList () {
+    async getRoleLists () {
       // 接口参数
-      const { rows } = await getRoleList({ page: 1, pageSize: 100 })
-      console.log(rows)
-      this.list = rows
+      const { rows } = await getRoleList({ page: 1, pagesize: 1000 })
+      console.log('角色列表', rows)
+      this.roleList = rows
     }
   }
 }

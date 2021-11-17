@@ -40,7 +40,7 @@ export default {
     async getUserInfo () {
       // id是路由配置的动态参数属性
       const res = await getUserDetailById(this.$route.params.id)
-      console.log(res)
+      console.log('用户的信息为：', res)
       this.userInfo = res
     }
   }
