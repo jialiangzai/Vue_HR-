@@ -23,6 +23,10 @@ Object.keys(directs).forEach(name => {
 // 生成组件全局注册插件 ------>插件注册use这个插件文件就行了
 import ComponentPlugin from '@/components/index'
 Vue.use(ComponentPlugin)
+// 引入混合
+import CheckPermission from '@/mixin/index.js'
+// 全局混入检查对象 ====》所有组件都有检查的方法
+Vue.mixin(CheckPermission)
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

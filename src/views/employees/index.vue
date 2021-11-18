@@ -29,6 +29,7 @@
                 icon="plus"
                 type="primary"
                 size="small"
+                :disabled="!CheckPermission('p-ro-add')"
                 @click="showDialog = true"
               >
                 新增员工

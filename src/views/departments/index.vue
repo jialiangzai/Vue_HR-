@@ -19,7 +19,9 @@
                   <el-dropdown>
                     <span> 操作<i class="el-icon-arrow-down" /> </span>
                     <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item @click.native="addDept()">
+                      <el-dropdown-item
+                        @click.native="addDept()"
+                      >
                         添加子部门
                       </el-dropdown-item>
                     </el-dropdown-menu>
