@@ -27,6 +27,9 @@ Vue.use(ComponentPlugin)
 import CheckPermission from '@/mixin/index.js'
 // 全局混入检查对象 ====》所有组件都有检查的方法
 Vue.mixin(CheckPermission)
+// echarts插件全局注册
+import EchartsComp from '@/utils/plugins'
+Vue.use(EchartsComp)
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
