@@ -9,41 +9,23 @@
       @change="loop"
     >
     </el-switch>
-    <!-- 雷达图  图表必须给高和宽度-->
-    <div ref="myDiv" class="radar-echart" />
+    <!-- 1. 准备绘制echarts图表的div -->
+    <div ref="box" class="box">1111</div>
   </div>
 </template>
 
 <script>
+// 2. 导入echarts方法
+// 导入所有图表
 // import * as echarts from 'echarts'
-// 引入 echarts 核心模块，核心模块提供了 echarts 使用必须要的接口。
+// 按需
 // import * as echarts from 'echarts/core'
-// // 引入柱状图图表，图表后缀都为 Chart
-// import {
-//   RadarChart
-// } from 'echarts/charts'
-// // 引入提示框，标题，直角坐标系组件，组件后缀都为 Component
-// import {
-//   TitleComponent,
-//   TooltipComponent,
-//   GridComponent
-// } from 'echarts/components'
-// // 引入 Canvas 渲染器，注意引入 CanvasRenderer 或者 SVGRenderer 是必须的一步
-// import {
-//   CanvasRenderer
-// } from 'echarts/renderers'
+// import { TooltipComponent } from 'echarts/components'
+// import { RadarChart } from 'echarts/charts'
+// import { CanvasRenderer } from 'echarts/renderers'
 
-// // 注册必须的组件
-// echarts.use(
-//   [TitleComponent,
-//     TooltipComponent,
-//     GridComponent,
-//     RadarChart,
-//     CanvasRenderer]
-// )
+// echarts.use([TooltipComponent, RadarChart, CanvasRenderer])
 export default {
-  // 一定要在mounted中不然无法操作dom
-  // 页面渲染完毕事件
   data () {
     return {
       cg: false,
@@ -92,8 +74,9 @@ export default {
   methods: {
     initChart () {
       // 基于准备好的dom，初始化echarts实例
-      this.myChart = this.echarts.init(this.$refs.myDiv)
-      // 绘制图表
+      this.myChart = this.echarts.init(this.$refs.box)
+      // 绘制图表=> 传入不同图表的配置对象options:{}
+      // 动态切换核心改option里的data=》重新调用myChart.setOption方法
       this.opt.series[0].data = [
         {
           value: [10, 20, 100, 30, 100, 0],
@@ -106,31 +89,7 @@ export default {
       ]
       this.myChart.setOption(this.opt)
     },
-    // 动态切换核心改option里的data=》重新调用myChart.setOption方法
-    ChangeData () {
-      // console.log(123)
-      // 鼠标悬停把option中的series的data数组中的value改变
-      /**
-       * 假设就3个人===》{value: [], name: ''}*3
-       */
-      const newData = []
-      for (let index = 0; index < 2; index++) {
-        // 存储成员的data
-        // 每个value有6项 ==》六边形
-        const Arrays = []
-        for (let k = 0; k < 5; k++) {
-          // 准备随机数 0-100
-          const ArrayItems = Math.floor(Math.random() * 100 + 1)
-          Arrays.push(ArrayItems)
-        }
-        newData.push({ value: Arrays, name: `老${index + 1}` })
-        console.log(newData)
-      }
-      // 替换数据
-      this.opt.series[0].data = newData
-      this.myChart.setOption(this.opt)
-    },
-    // 切换 节流
+    // 切换
     loop (f) {
       console.log(f)
       if (this.st) {
@@ -154,13 +113,12 @@ export default {
 
       this.myChart.setOption(this.opt)
     }
-
   }
 }
 </script>
 
-<style>
-.radar-echart {
+<style lang="scss" scoped>
+.box {
   width: 100%;
   height: 400px;
 }
