@@ -1,5 +1,15 @@
 <template>
-  <el-calendar v-model="currentDate"></el-calendar>
+  <el-calendar v-model="currentDate">
+    <!-- 自定义每个格子(天)结构 -->
+    <!-- date日期对象=》new Date data 年-月-日=》当天信息 -->
+    <!-- 在 scoped-slot 可以获取到 date（当前单元格的日期）, data（包括 type，isSelected，day 属性） -->
+    <template #dateCell="{ date, data }">
+      <div class="date-content">
+        <span class="text">{{ getDays(data.day) }}</span>
+        <span v-if="isWeek(date)" class="rest">休</span>
+      </div>
+    </template>
+  </el-calendar>
 </template>
 
 <script>
@@ -7,6 +17,18 @@ export default {
   data () {
     return {
       currentDate: new Date()
+    }
+  },
+  methods: {
+    // 几号
+    getDays (value) {
+      const day = value.split('-')[2] // 11, 02
+      return day
+    },
+    // 周末
+    isWeek (v) {
+      // console.log(v)
+      return v.getDay() === 6 || v.getDay() === 0
     }
   }
 }

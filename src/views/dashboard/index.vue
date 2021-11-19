@@ -26,6 +26,7 @@
             <span>工作日历</span>
           </div>
           <!-- 放置日历组件 -->
+          <WorkCal />
         </el-card>
         <!-- 公告 -->
         <el-card class="box-card">
@@ -107,8 +108,13 @@
 
 <script>
 import { mapGetters } from 'vuex'
+// 日历
+import WorkCal from './components/work-calendar.vue'
 export default {
   name: 'Dashboard',
+  components: {
+    WorkCal
+  },
   computed: {
     ...mapGetters(['userId', 'name', 'avatar', 'departmentName', 'mobile'])
   }
