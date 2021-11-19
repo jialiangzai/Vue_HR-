@@ -10,7 +10,7 @@
       <el-checkbox v-for="it in roleList" :key="it.id" :label="it.id">
         {{ it.name }}
       </el-checkbox>
-      <!-- ：label复选框选中值；roleIds数组记录选中的值 -->
+      <!-- ：label复选框选中值；selRoles数组记录选中的值 -->
       <!-- <el-checkbox label="2"> cto </el-checkbox>
       <el-checkbox label="3"> fe </el-checkbox> -->
     </el-checkbox-group>

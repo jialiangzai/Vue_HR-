@@ -5,6 +5,10 @@ const getters = {
   device: state => state.app.device,
   token: state => state.user.token,
   avatar: state => state.user.userInfo.staffPhoto,
-  name: state => state.user.userInfo.username
+  name: state => state.user.userInfo.username,
+  // id
+  userId: state => state.user.userInfo.id,
+  mobile: state => state.user.userInfo.mobile,
+  departmentName: state => state.user.userInfo.departmentName
 }
 export default getters
