@@ -67,6 +67,15 @@ module.exports = {
     // provide the app's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
     name: name,
+    externals: {
+      /**
+       * externals 对象属性解析：
+       * '包名' : '模块内置对象'
+     */
+      'vue': 'Vue',
+      'element-ui': 'ELEMENT',
+      'xlsx': 'XLSX'
+    },
     resolve: {
       alias: {
         '@': resolve('src')
