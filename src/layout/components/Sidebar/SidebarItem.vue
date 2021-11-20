@@ -13,8 +13,8 @@
           :index="resolvePath(onlyOneChild.path)"
           :class="{ 'submenu-title-noDropdown': !isNest }"
         >
-          <!-- onlyOneChild路由规则动态的 -->
           <!-- :title="onlyOneChild.meta.title" -->
+          <!-- route表示语言包的键 -->
           <item
             :icon="onlyOneChild.meta.icon || (item.meta && item.meta.icon)"
             :title="$t(`route.${onlyOneChild.name}`)"
