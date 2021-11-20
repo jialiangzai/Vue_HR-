@@ -14,6 +14,7 @@
     </div>
     <!-- 右侧登录人信息 -->
     <div class="right-menu">
+      <ScreenFull class="rm-item" />
       <!-- 登录人信息 -->
       <el-dropdown class="avatar-container" trigger="hover">
         <div class="avatar-wrapper">
@@ -90,6 +91,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// 全屏按钮
+.rm-item {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 12px;
+}
 .navbar {
   height: 50px;
   overflow: hidden;
