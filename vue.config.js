@@ -6,6 +6,7 @@ const defaultSettings = require('./src/settings.js')
 function resolve (dir) {
   return path.join(__dirname, dir)
 }
+
 // 设置开发服务器端口
 // console.log('看看：', process.env)
 /**
@@ -14,6 +15,32 @@ function resolve (dir) {
  * 2. npm run build:prod => 生产环境 =》通过读取.env.production文件获取环境变量
  */
 const name = defaultSettings.title || 'vue Admin Template' // page title
+let externals = {}
+let cdn = { css: [], js: [] }
+const isProduction = process.env.NODE_ENV === 'production' // 判断是否是生产环境
+if (isProduction) {
+  // 排除大文件
+  externals = {
+    'vue': 'Vue',
+    'element-ui': 'ELEMENT',
+    'xlsx': 'XLSX'
+  }
+  // cdn引入
+  cdn = {
+    css: [
+      // element-ui css 样式表
+      'https://cdn.jsdelivr.net/npm/element-ui@2.13.2/lib/theme-chalk/index.css'
+    ],
+    js: [
+      // vue must at first!
+      'https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js',
+      // element-ui js
+      'https://cdn.jsdelivr.net/npm/element-ui@2.13.2/lib/index.js',
+      // xlsx
+      'https://cdn.jsdelivr.net/npm/xlsx@0.16.6/dist/xlsx.full.min.js'
+    ]
+  }
+}
 
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
@@ -67,15 +94,7 @@ module.exports = {
     // provide the app's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
     name: name,
-    externals: {
-      /**
-       * externals 对象属性解析：
-       * '包名' : '模块内置对象'
-     */
-      'vue': 'Vue',
-      'element-ui': 'ELEMENT',
-      'xlsx': 'XLSX'
-    },
+    externals: externals,
     resolve: {
       alias: {
         '@': resolve('src')
@@ -93,6 +112,11 @@ module.exports = {
         include: 'initial'
       }
     ])
+    // 注入cdn变量 (打包时会执行)
+    config.plugin('html').tap(args => {
+      args[0].cdn = cdn // 配置cdn给插件
+      return args
+    })
 
     // when there are many pages, it will cause too many meaningless requests
     config.plugins.delete('prefetch')

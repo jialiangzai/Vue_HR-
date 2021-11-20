@@ -96,7 +96,7 @@ export const constantRoutes = [
 ]
 // 工厂函数 创建路由实例
 const createRouter = () => new Router({
-  // mode: 'history', // require service support
+  mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }), // 每次切换页面让滚动条回到顶部
   // routes: [...constantRoutes, ...asyncRoutes]
   routes: [...constantRoutes]
