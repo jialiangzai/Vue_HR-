@@ -16,7 +16,22 @@
 export default {
   data () {
     return {
-      currentDate: new Date()
+      currentDate: new Date(),
+      show: true
+    }
+  },
+  // 监听多语言变化手动销毁日历让他重新创建===》解决日历周几不切换问题
+  watch: {
+    // $i18n全局挂载可使用===>如果监听的属性嵌套关系要记得加引号
+    async '$i18n.locale' (newValue) {
+      console.log('监控到多语言切换了：', newValue)
+      // 监听多语言变化=》手动销毁日历，让他重新创建=》解决星期切换不翻译问题
+      // 1. 先销毁
+      this.show = false
+      await this.$nextTick()
+      // 注意：等到销毁之后
+      // 2. 在创建（刷新）
+      this.show = true
     }
   },
   methods: {
