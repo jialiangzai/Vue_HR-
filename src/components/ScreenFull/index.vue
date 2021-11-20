@@ -31,7 +31,7 @@ export default {
   created () {
     // 监听全屏切换
     sf.on('change', () => {
-      // console.log('全屏切换了：', sf)
+      console.log('全屏切换了：', sf)
       // if (sf.isFullscreen) {
       //   // 全屏状态
       //   this.isFull = sf.isFullscreen

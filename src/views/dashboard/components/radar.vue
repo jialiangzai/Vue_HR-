@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @mouseenter="loop" @mouseleave="loop(false)">
     <el-switch
       v-model="cg"
       active-text="开启数据切换"
@@ -92,6 +92,7 @@ export default {
   methods: {
     initChart () {
       // 基于准备好的dom，初始化echarts实例
+      // 类似data但是不是响应式
       this.myChart = this.echarts.init(this.$refs.myDiv)
       // 绘制图表
       this.opt.series[0].data = [
@@ -107,32 +108,9 @@ export default {
       this.myChart.setOption(this.opt)
     },
     // 动态切换核心改option里的data=》重新调用myChart.setOption方法
-    ChangeData () {
-      // console.log(123)
-      // 鼠标悬停把option中的series的data数组中的value改变
-      /**
-       * 假设就3个人===》{value: [], name: ''}*3
-       */
-      const newData = []
-      for (let index = 0; index < 2; index++) {
-        // 存储成员的data
-        // 每个value有6项 ==》六边形
-        const Arrays = []
-        for (let k = 0; k < 5; k++) {
-          // 准备随机数 0-100
-          const ArrayItems = Math.floor(Math.random() * 100 + 1)
-          Arrays.push(ArrayItems)
-        }
-        newData.push({ value: Arrays, name: `老${index + 1}` })
-        console.log(newData)
-      }
-      // 替换数据
-      this.opt.series[0].data = newData
-      this.myChart.setOption(this.opt)
-    },
     // 切换 节流
     loop (f) {
-      console.log(f)
+      // console.log(f)
       if (this.st) {
         clearInterval(this.st)
         this.st = null

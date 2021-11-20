@@ -9,8 +9,9 @@ import UploadExcel from './UploadExcel'
 import UploadImg from './UploadImg'
 // 全屏
 import ScreenFull from './ScreenFull'
+import Lang from './Lang'
 // 定义数据，里面放全局公共组件的
-const components = [PageTools, UploadExcel, UploadImg, ScreenFull]
+const components = [PageTools, UploadExcel, UploadImg, ScreenFull, Lang]
 export default {
   /**
    *

@@ -40,7 +40,11 @@ Vue.use(EchartsComp)
  */
 // set ElementUI lang to EN
 // Vue.use(ElementUI, { locale })
-Vue.use(ElementUI)
+// 国际化语言====element
+import i18n from '@/lang'
+// 根据当前的locale去语言包寻找对应内容
+// ElementUI支持i18n处理
+Vue.use(ElementUI, { i18n: (k, v) => i18n.t(k, v) })
 // 如果想要中文版 element-ui，按如下方式声明
 // Vue.use(ElementUI)
 // 重写原生js日志的方法 用于上线后生产环境重写日志
@@ -53,5 +57,6 @@ new Vue({
   el: '#app',
   router,
   store,
+  i18n,
   render: h => h(App)
 })

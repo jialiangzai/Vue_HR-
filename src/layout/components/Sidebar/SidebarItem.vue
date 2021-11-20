@@ -13,6 +13,8 @@
           :index="resolvePath(onlyOneChild.path)"
           :class="{ 'submenu-title-noDropdown': !isNest }"
         >
+          <!--  -->
+          <!-- :title="$t(`route.${onlyOneChild.name}`)" -->
           <item
             :icon="onlyOneChild.meta.icon || (item.meta && item.meta.icon)"
             :title="onlyOneChild.meta.title"

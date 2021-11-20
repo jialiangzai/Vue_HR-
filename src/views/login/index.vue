@@ -60,12 +60,12 @@
         style="width: 100%; margin-bottom: 30px"
         @click.native.prevent="handleLogin"
       >
-        Login
+        {{ $t("login.登录") }}
       </el-button>
       <!-- 提示语=》练习使用的手机号和密码 -->
       <div class="tips">
-        <span style="margin-right: 20px">账号: 13800000002-9</span>
-        <span> 密码: 123456</span>
+        <span style="margin-right: 20px">{{ $t("login.username") }} : 13800000002-9</span>
+        <span> {{ $t("login.password") }}: 123456</span>
       </div>
     </el-form>
   </div>
