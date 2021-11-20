@@ -13,7 +13,9 @@ import customZH from './zh'
 // 引入自定义英文包
 import customEN from './en'
 import Cookie from 'js-cookie'
-
+// let expires = 2  // 天
+const expires = new Date(Date.now() + 2 * 60 * 60 * 1000) // 2小时后过期
+Cookie.set('name', 'value', { expires })
 // 创建国际化插件的实例
 const i18n = new VueI18n({
   // 指定语言类型 zh表示中文  en表示英文

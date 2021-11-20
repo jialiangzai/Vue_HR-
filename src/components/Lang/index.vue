@@ -19,6 +19,7 @@ import Cookie from 'js-cookie'
 export default {
   name: 'Lang',
   methods: {
+    // lang===》点击中文是zh 英文en   command的值
     changeLanguage (lang) {
       Cookie.set('lang', lang)
       this.$i18n.locale = lang // 设置给本地的i18n插件

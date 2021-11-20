@@ -1,6 +1,6 @@
 export default {
   route: {
-    dashboard: 'Dashboard',
+    Dashboard: 'Dashboard',
     manage: 'manage',
     users: 'users',
     menus: 'menus',
@@ -72,7 +72,7 @@ export default {
     // 企业
     'saas-clients': 'Saas-Clients',
     'saas-clients-details': 'Saas-Details',
-    'permissions': 'permissions' // 权限管理
+    'permission': 'permissions' // 权限管理
 
   },
   navbar: {

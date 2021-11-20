@@ -1,6 +1,6 @@
 export default {
   route: {
-    dashboard: '首页',
+    Dashboard: '首页',
     manage: '后台管理',
     users: '用户管理',
     menus: '菜单管理',
@@ -71,7 +71,7 @@ export default {
     'saas-clients': '企业',
     'saas-clients-details': '企业详情',
     // 权限
-    'permissions': '权限管理' // 权限管理
+    'permission': '权限管理' // 权限管理
   },
   // 当我们引入VueI18n语言插件之后，每个组件实例都拥有了一个$t方法，这个方法可以帮助我们进行语言转换，可以根据当前的语言类型，使用传入的key去寻找当前key对应的文本
   navbar: {

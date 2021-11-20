@@ -13,11 +13,11 @@
           :index="resolvePath(onlyOneChild.path)"
           :class="{ 'submenu-title-noDropdown': !isNest }"
         >
-          <!--  -->
-          <!-- :title="$t(`route.${onlyOneChild.name}`)" -->
+          <!-- onlyOneChild路由规则动态的 -->
+          <!-- :title="onlyOneChild.meta.title" -->
           <item
             :icon="onlyOneChild.meta.icon || (item.meta && item.meta.icon)"
-            :title="onlyOneChild.meta.title"
+            :title="$t(`route.${onlyOneChild.name}`)"
           />
         </el-menu-item>
       </app-link>
